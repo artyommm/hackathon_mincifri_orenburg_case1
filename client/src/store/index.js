@@ -4,6 +4,6 @@ import {publiсationsModule} from "./publiсationsModule";
 
 export default createStore({
   modules: {
-    publiсationsModule: publiсationsModule,
+    cards: publiсationsModule,
   }
 })

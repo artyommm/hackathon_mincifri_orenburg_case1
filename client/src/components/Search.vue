@@ -35,6 +35,7 @@
 
 <script>
 import axios from 'axios';
+import {mapMutations, mapState} from 'vuex';
 
 export default {
   name: 'Search',
@@ -67,29 +68,38 @@ export default {
     await axios.get('http://127.0.0.1:5000/api/keywords/get_all')
         .then(response_categories => {
           this.categories = response_categories.data
-          console.log(response_categories)
         }).catch(error => {
           console.error('Ошибка при создании:', error)
         })
   },
   methods: {
-    async submitHandlerSearch(e) {
-      // await axios.post('http://127.0.0.1:5000/api/search', {
-      //   keywords: this.category,
-      //   enterprise: this.company,
-      //   date_from: this.date_from === '' ? null : this.date_from,
-      //   date_to: this.date_to === '' ? null : this.date_to
-      // })
-      //     .then(response => {
-      //       console.log(response)
-      //       this.$emit('updateStyle', {
-      //         isSearch: this.isSearch
-      //       })
-      //     }).catch(error => {
-      //       console.error('Ошибка при отправке:', error)
-      //     })
+    ...mapMutations({
+      setPublications: 'cards/setPublications',
+      setSearch: 'cards/setSearch'
+    }),
 
-      await this.$router.push({ name: 'list' });
+    async submitHandlerSearch(e) {
+      console.log(JSON.stringify(this.category))
+      console.log(JSON.stringify(this.company))
+      console.log(this.date_from)
+      console.log(this.date_to)
+      await axios.post('http://127.0.0.1:5000/api/search/', {
+        headers: {'Content-type': 'application/json'},
+        keywords: JSON.stringify(this.category),
+        enterprise: JSON.stringify(this.company),
+        date_from: this.date_from === '' ? null : this.date_from,
+        date_to: this.date_to === '' ? null : this.date_to
+      })
+          .then(response => {
+            this.isSearch = true;
+            this.setPublications(response.data);
+            this.setSearch(this.isSearch);
+
+            this.$router.push({ name: 'list' });
+          }).catch(error => {
+            console.error('Ошибка при отправке:', error)
+          })
+
     },
   }
 }

@@ -2,7 +2,7 @@
 export const publiсationsModule = {
     state: () => ({
         isSearch: false,
-        publiсations: [],
+        cards: [],
     }),
     getters: {
         getSearch: state => {
@@ -13,13 +13,14 @@ export const publiсationsModule = {
         setSearch(state, search) {
             state.isSearch = search;
             if(!search) {
-                state.publiсations = []
+                state.cards = []
             }
         },
-        setPublications(state, publications) {
-            if (!publications)
-                state.publications = []
-            state.publications = publications;
+        setPublications(state, cards) {
+            if (!cards)
+                state.cards = []
+            state.cards = cards;
+            console.log(state)
         },
     },
     namespaced:true,
