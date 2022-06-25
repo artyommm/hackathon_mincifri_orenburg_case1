@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash
 
 from application import app
 from application.models import User
-from common.const import ERROR_MESSANGES, ERROR_CODES
+from application.common.const import ERROR_MESSANGES, ERROR_CODES
 
 
 def token_required(function):

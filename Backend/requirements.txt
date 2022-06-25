@@ -16,3 +16,4 @@ marshmallow-sqlalchemy
 flask-marshmallow
 cors
 flask-api
+flask-cors

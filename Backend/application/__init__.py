@@ -9,10 +9,11 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['SECRET_KEY'] = 'ORENBOOGLE'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:6432/test_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:6432/orenboogle_database'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 from application import models
+from application import implementation
