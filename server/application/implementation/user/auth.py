@@ -8,7 +8,7 @@ from werkzeug.security import check_password_hash
 
 from application import app
 from application.models import User, user_schema
-from application.common.const import ERROR_MESSANGES, ERROR_CODES, STANDART_SESSION_TIME
+from application.common.const import ERROR_MESSANGES, RESPONSE_CODES, STANDART_SESSION_TIME
 
 
 def token_required(function):
@@ -22,13 +22,13 @@ def token_required(function):
         request_get = request.headers.get('Authorization')
         token = request_get.split(' ')[1] if request_get else None
         if not token:
-            return make_response(ERROR_MESSANGES['no_token'], ERROR_CODES['conflict'])
+            return make_response(ERROR_MESSANGES['no_token'], RESPONSE_CODES['conflict'])
 
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
             current_user = User.query.filter_by(id=data['id'].first())
         except Exception:
-            return make_response(ERROR_MESSANGES['token_timeout'], ERROR_CODES['conflict'])
+            return make_response(ERROR_MESSANGES['token_timeout'], RESPONSE_CODES['conflict'])
 
         return function(current_user, *args, **kwargs)
     return wrapper
@@ -42,11 +42,11 @@ def login():
     """
     auth = request.authorization
     if not auth or not auth.username or not auth.password:
-        return make_response(ERROR_MESSANGES['no_login_or_pass'], ERROR_CODES['unauthorized'])
+        return make_response(ERROR_MESSANGES['no_login_or_pass'], RESPONSE_CODES['unauthorized'])
 
     user = User.query.filter_by(mail=auth.username).first()
     if not user:
-        return make_response(ERROR_MESSANGES['no_user'], ERROR_CODES['unauthorized'])
+        return make_response(ERROR_MESSANGES['no_user'], RESPONSE_CODES['unauthorized'])
 
     if check_password_hash(user.password, auth.password):
         token = jwt.encode({
@@ -65,4 +65,4 @@ def login():
             }
         })
 
-    return make_response(ERROR_MESSANGES['incorrect_password'], ERROR_CODES['unauthorized'])
+    return make_response(ERROR_MESSANGES['incorrect_password'], RESPONSE_CODES['unauthorized'])
