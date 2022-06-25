@@ -76,9 +76,9 @@ export default {
     async submitHandlerSearch(e) {
       // await axios.post('http://127.0.0.1:5000/api/search', {
       //   keywords: this.category,
-      //   enterprises: this.company,
-      //   date_from: this.date_from,
-      //   date_to: this.date_to
+      //   enterprise: this.company,
+      //   date_from: this.date_from === '' ? null : this.date_from,
+      //   date_to: this.date_to === '' ? null : this.date_to
       // })
       //     .then(response => {
       //       console.log(response)
