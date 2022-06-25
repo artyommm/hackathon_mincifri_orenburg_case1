@@ -7,7 +7,7 @@ class InformationResource(db.Model):
     name = db.Column(db.String(45), nullable=False)
 
     # отношения с другими таблицами
-    publication = db.relationship('Publication', backref='publications')
+    publication = db.relationship('Publication', backref='informationresource')
 
     def __init__(self, public_id, name):
         self.public_id = public_id

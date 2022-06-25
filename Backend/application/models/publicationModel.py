@@ -2,7 +2,7 @@ from application import db, ma
 
 
 class Publication(db.Model):
-    #__table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     __tablename__ = 'publication'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(45), nullable=False)
