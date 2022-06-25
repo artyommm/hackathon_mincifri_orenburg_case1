@@ -68,8 +68,17 @@ def login():
     #     if not patient:
     #         patient = Patient(None, None)
     #
-    #     return jsonify({'token': token.decode('UTF-8'),
-    #                     'user': {'user': result, 'passport': {'series': passport.series, 'number': passport.number},
-    #                              'snils': snils.number, 'anamnesis': patient.anamnesis}})
+    #     return jsonify({
+    #         'token': token.decode('UTF-8'),
+    #         'user': {
+    #             'user': result,
+    #             'passport': {
+    #                 'series': passport.series,
+    #                 'number': passport.number
+    #             },
+    #             'snils': snils.number,
+    #             'anamnesis': patient.anamnesis
+    #         }
+    #     })
 
     return make_response(ERROR_MESSANGES['incorrect_password'], ERROR_CODES['unauthorized'])
