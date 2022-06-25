@@ -1,4 +1,3 @@
-# https://mineconomy.orb.ru/search/?q=газпром+грант
 # -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
