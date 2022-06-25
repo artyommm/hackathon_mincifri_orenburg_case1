@@ -1,20 +1,29 @@
 <template>
   <div class="search__wrapper d-flex justify-content-center">
-  <form class="search">
+  <form class="search" @submit.prevent="submitHandlerSearch">
     <div class="search__header d-flex flex-column">
       <div class="search__item">
-        <select class="form-select ">
+        <label for="company" class="form-label">Компании</label>
+        <select v-model="company" id="company" class="form-select ">
           <option selected disabled>Выберите предприятие</option>
-          <option v-for="company in companies" v-bind:key="company.id" value="{{company.id}}">{{company.name}}</option>
+          <option v-for="company in companies" v-bind:key="company.id" v-bind:value="company.id">{{company.name}}</option>
         </select>
       </div>
       <div class="search__item">
-        <select class="form-select choices-multiple" multiple>
+        <label for="category" class="form-label">Категории</label>
+        <select v-model="category" id="category" class="form-select choices-multiple" multiple>
 <!--          <option selected disabled>Выберите категории</option>-->
-          <option v-for="category in categories" v-bind:key="category.id" value="{{category.id}}">{{category.name}}</option>
+          <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{category.name}}</option>
         </select>
       </div>
-      <button type="button" class="btn btn-primary">Поиск</button>
+      <div class="search__item">
+        <label class="form-label">Промежуток времени</label>
+        <div class="search__date">
+          <input v-model="date_from" type="date" name='date_from' class="form-control">
+          <input v-model="date_to" type="date" name='date_to' class="form-control">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Поиск</button>
     </div>
 <!--    <div class="search__footer input-group mb-3">-->
 <!--      <input type="text" class="form-control" placeholder="URL" aria-describedby="button-addon2">-->
@@ -39,8 +48,32 @@ export default {
         {id: 1, name: 'компания 1'},
         {id: 2, name: 'компания 2'},
         {id: 3, name: 'компания 3'}
-      ]
+      ],
+      isSearch: false,
+      category: [],
+      company: [],
+      date_from: '',
+      date_to: '',
     }
+  },
+  methods: {
+    async submitHandlerSearch(e) {
+      this.$emit('updateStyle', {
+        isSearch: this.isSearch
+      })
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/api/user/passport', {
+          passportSeries: this.passportSeries,
+          passportNumber: this.passportId
+        }, {
+          headers: {Authorization:`Bearer ${localStorage.getItem('token')}`},
+        })
+        console.log(response)
+      } catch (error) {
+        console.log(error.request.response)
+      } finally {
+      }
+    },
   }
 }
 </script>
@@ -62,5 +95,10 @@ export default {
 
 .search__item {
   margin: 10px;
+}
+
+.search__date {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

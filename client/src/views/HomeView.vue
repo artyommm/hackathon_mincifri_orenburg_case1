@@ -1,15 +1,15 @@
 <template>
   <div :class="{
-    'basic__wrapper d-flex flex-column justify-content-center' : true,
-    'align-items-center' : !isSearch,
-    'align-items-start' : isSearch,
+    'basic__wrapper d-flex flex-column  align-items-center' : true,
+    'justify-content-center ' : !isSearch,
+    'justify-content-start' : isSearch,
 
   }">
     <div class="d-flex justify-content-center align-items-center">
-      <search></search>
+      <search @updateStyle="updateStyle"></search>
     </div>
-    <div class="list__home">
-      <list @click="search"></list>
+    <div class="list__home" v-if="isSearch">
+      <list></list>
     </div>
   </div>
 </template>
@@ -29,9 +29,8 @@ export default {
     }
   },
   methods: {
-    search() {
-      this.isSearch = true;
-      console.log(111)
+    updateStyle(e) {
+      this.isSearch = e.isSearch
     }
   }
 }
