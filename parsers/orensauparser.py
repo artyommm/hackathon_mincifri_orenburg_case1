@@ -18,7 +18,7 @@ months = {
 }
 
 
-def get_data(url, kws, cmpns):
+def get_data(url, keywords, enterprises):
     articles = []
     resource = 'https://orensau.ru'
 
@@ -48,14 +48,14 @@ def get_data(url, kws, cmpns):
 
         month = months[month.upper()] if newsDate else 'None'
 
-        newsDate = '-'.join([day, month, year]) if newsDate else 'None'
+        newsDate = '.'.join([day, month, year]) if newsDate else 'None'
         articleObject = {
-            'company': cmpns,
+            'company': enterprises,
             'resource': resource,
             'news': ' '.join(article.get_text().strip().split()),
             'date': newsDate,
             'link': siteUrl,
-            'categories': kws,
+            'categories': keywords,
         }
 
         articles.append(articleObject)
@@ -63,10 +63,10 @@ def get_data(url, kws, cmpns):
     return articles
 
 
-def orensauParser(keywords=[], companies=[]):
-    filter = '+'.join(keywords)+'+'+'+'.join(companies)  # до 20 символов
+def orensauParser(keywords=[], enterprises=[]):
+    filter = '+'.join(keywords)+'+'+'+'.join(enterprises)  # до 20 символов
     searchUrl = "https://orensau.ru/ru/poisk?searchword=%s&ordering=&searchphrase=all&limit=0" % (
         filter)
 
-    articles = get_data(searchUrl, keywords, companies)
+    articles = get_data(searchUrl, keywords, enterprises)
     return articles

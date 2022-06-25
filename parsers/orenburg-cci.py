@@ -3,8 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def get_data(url):
-    sites = []
+def get_data(url, keywords, enterprises):
+    articles = []
+    resource = 'https://orenburg-cci.ru/'
 
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -20,23 +21,37 @@ def get_data(url):
 
     soup = BeautifulSoup(r.content, "html.parser")
 
-    # запись в файл
-    with open("index.html", "w") as file:
+    while soup is not None:
         for article in soup.find_all("h2", class_="entry-title"):
-            siteUrl = 'https://orensau.ru'+article.find('a')['href']
-            file.write(siteUrl+'\n')
-            sites.append(siteUrl)
+            siteUrl = article.find('a')['href']
+            newsDateAttr = BeautifulSoup(requests.get(
+                url=siteUrl, headers=headers).content, "html.parser").find("span", class_="news-date")
+            newsDate = newsDateAttr.get_text().strip() if newsDateAttr else None
+            [day, month, year] = newsDate.split(
+                '.') if newsDate else ['None', 'None', 'None']
 
-    return sites
+            newsDate = '.'.join([day, month, year]) if newsDate else 'None'
+            articleObject = {
+                'companies': enterprises,
+                'resource': resource,
+                'news': ' '.join(article.get_text().strip().split()),
+                'date': newsDate,
+                'link': siteUrl,
+                'categories': keywords,
+            }
+
+            articles.append(articleObject)
+        nextPageTag = soup.find("div", class_="nav-previous")
+        soup = BeautifulSoup(requests.get(
+            url=nextPageTag.find('a')['href'], headers=headers).content, "html.parser") if nextPageTag else None
+
+    return articles
 
 
-def main():
-    filters = ['грант']  # до 20 символов
-    filter = '+'.join(filters)
+def orenburgcciParser(keywords=[], enterprises=[]):
+    filter = '+'.join(keywords)+'+'+'+'.join(enterprises)  # до 20 символов
     searchUrl = "https://orenburg-cci.ru/?s=%s&ixsl=1" % (
         filter)
 
-    print(get_data(searchUrl))
-
-
-main()
+    articles = get_data(searchUrl, keywords, enterprises)
+    return articles
