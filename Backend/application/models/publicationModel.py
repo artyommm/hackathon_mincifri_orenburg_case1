@@ -27,7 +27,7 @@ class Publication(db.Model):
     keyWord_id = db.relationship('KeyWord', secondary=publication_keyword,
                                  backref=db.backref('publication', lazy='select'))
 
-    request_id = db.relationship('Request', secondary=publication_keyword,
+    request_id = db.relationship('Request', secondary=publication_request,
                                  backref=db.backref('publication', lazy='select'))
 
     enterprise_id = db.Column(db.Integer(), db.ForeignKey('enterprise.id'))

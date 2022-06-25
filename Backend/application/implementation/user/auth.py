@@ -1,13 +1,14 @@
 from functools import wraps
 from datetime import datetime, timedelta
+from pytz import timezone
 
 import jwt
 from flask import request, make_response, jsonify
 from werkzeug.security import check_password_hash
 
 from application import app
-from application.models import User
-from application.common.const import ERROR_MESSANGES, ERROR_CODES
+from application.models import User, user_schema
+from application.common.const import ERROR_MESSANGES, ERROR_CODES, STANDART_SESSION_TIME
 
 
 def token_required(function):
@@ -47,38 +48,21 @@ def login():
     if not user:
         return make_response(ERROR_MESSANGES['no_user'], ERROR_CODES['unauthorized'])
 
-    # пока не работает
-    # if check_password_hash(user.password, auth.password):
-    #     token = jwt.encode({
-    #         'public_id': user.public_id,
-    #         'exp': datetime.now(pytz.timezone('Europe/Moscow')) + timedelta(minutes=60)
-    #     }, app.config['SECRET_KEY'])
-    #
-    #     result = user_schema.dump(user)
-    #     passport = Passport.query.filter_by(user_id=user.id).first()
-    #     snils = Snils.query.filter_by(user_id=user.id).first()
-    #     patient = Patient.query.filter_by(user_id=user.id).first()
-    #
-    #     if not passport:
-    #         passport = Passport(None, None, None)
-    #
-    #     if not snils:
-    #         snils = Snils(None, None)
-    #
-    #     if not patient:
-    #         patient = Patient(None, None)
-    #
-    #     return jsonify({
-    #         'token': token.decode('UTF-8'),
-    #         'user': {
-    #             'user': result,
-    #             'passport': {
-    #                 'series': passport.series,
-    #                 'number': passport.number
-    #             },
-    #             'snils': snils.number,
-    #             'anamnesis': patient.anamnesis
-    #         }
-    #     })
+    if check_password_hash(user.password, auth.password):
+        token = jwt.encode({
+            'public_id': user.public_id,
+            'exp': datetime.now(timezone('Europe/Moscow')) + timedelta(minutes=STANDART_SESSION_TIME)
+        }, app.config['SECRET_KEY'])
+
+        result = user_schema.dump(user)
+
+        return jsonify({
+            'token': token.decode('UTF-8'),
+            'user': {
+                'id': result.id,
+                'login': result.login,
+                'role': result.role
+            }
+        })
 
     return make_response(ERROR_MESSANGES['incorrect_password'], ERROR_CODES['unauthorized'])

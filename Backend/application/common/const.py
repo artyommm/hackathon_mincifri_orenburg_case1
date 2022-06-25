@@ -1,4 +1,5 @@
 APPLICATION_NAME = 'OrenBoogle'
+STANDART_SESSION_TIME = 120
 
 ERROR_MESSANGES = {
     'no_token': 'Ошибка авторизации. Токен не найден!',

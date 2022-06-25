@@ -1,7 +1,6 @@
 from application.models.userModel import *
-# TODO: в процессе менять чтобы ошибок не было
-import application.models.publicationModel
-import application.models.requestModel
-import application.models.keyWordModel
-import application.models.enterpriseModel
-import application.models.informationResourceModel
+from application.models.publicationModel import *
+from application.models.requestModel import *
+from application.models.keyWordModel import *
+from application.models.enterpriseModel import *
+from application.models.informationResourceModel import *
