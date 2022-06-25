@@ -12,15 +12,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="publiсation in publiсations" v-bind:key="publiсation.id">
-        <th scope="row">{{ publiсation.id }}</th>
-        <td>{{ publiсation.enterprise }}</td>
-        <td>{{ publiсation.information_resource }}</td>
-        <td>{{ publiсation.title }}</td>
-        <td>{{ publiсation.date_of_publication }}</td>
-        <td>{{ publiсation.publication_url }}</td>
+      <tr v-for="card in cards" v-bind:key="card.id">
+        <th scope="row">{{ card.id }}</th>
+        <td>{{ card.enterprise }}</td>
+        <td>{{ card.information_resource }}</td>
+        <td>{{ card.title }}</td>
+        <td>{{ card.date_of_publication }}</td>
+        <td>{{ card.publication_url }}</td>
         <td>
-          <span v-for="(category, index) in publiсation.categories" v-bind:key="index">
+          <span v-for="(category, index) in card.categories" v-bind:key="index">
             {{ category.name }}
           </span>
         </td>
@@ -31,50 +31,22 @@
 //class="overflow-hidden" пропуск
 //class="overflow-auto" скролл
 <script>
+import {mapState} from "vuex";
 
 export default {
   name: 'Search',
   data() {
     return {
-      publiсations: [
-        {
-          id: 1,
-          title: 'публикация 1',
-          date_of_publication:'11.01.2002',
-          publication_url:'http/pizdec',
-          information_resource: 'blabla',
-          enterprise: 'super',
-          categories: [
-            {id: 1, name: 'категория 1'},
-            {id: 2, name: 'категория 2'}
-          ]
-        },
-        {
-          id: 2,
-          title: 'публикация 2',
-          date_of_publication:'11.01.2002',
-          publication_url:'http/pizdec',
-          information_resource: 'blabla',
-          enterprise: 'super',
-          categories: [
-            {id: 1, name: 'категория 3'},
-            {id: 2, name: 'категория 2'}
-          ]
-        },
-        {
-          id: 3,
-          title: 'публикация 3',
-          date_of_publication:'11.01.2002',
-          publication_url:'http/pizdec',
-          information_resource: 'blabla',
-          enterprise: 'super',
-          categories: [
-            {id: 1, name: 'категория 1'},
-            {id: 2, name: 'категория 3'}
-          ]
-        },
-      ]
+      cards: []
     }
+  },
+  computed: {
+    ...mapState({
+      cards_request: state => state.cards.cards,
+    })
+  },
+  async created() {
+    this.cards = this.cards_request
   }
 }
 </script>

@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import {mapMutations, mapState} from 'vuex';
 
 export default {
   name: 'Search',
@@ -56,23 +58,48 @@ export default {
       date_to: '',
     }
   },
-  methods: {
-    async submitHandlerSearch(e) {
-      this.$emit('updateStyle', {
-        isSearch: this.isSearch
-      })
-      try {
-        const response = await axios.post('http://127.0.0.1:5000/api/user/passport', {
-          passportSeries: this.passportSeries,
-          passportNumber: this.passportId
-        }, {
-          headers: {Authorization:`Bearer ${localStorage.getItem('token')}`},
+  async created() {
+    await axios.get('http://127.0.0.1:5000/api/enterprises/get_all')
+        .then(response_companies => {
+          this.companies = response_companies.data
+        }).catch(error => {
+          console.error('Ошибка при создании:', error)
         })
-        console.log(response)
-      } catch (error) {
-        console.log(error.request.response)
-      } finally {
-      }
+    await axios.get('http://127.0.0.1:5000/api/keywords/get_all')
+        .then(response_categories => {
+          this.categories = response_categories.data
+        }).catch(error => {
+          console.error('Ошибка при создании:', error)
+        })
+  },
+  methods: {
+    ...mapMutations({
+      setPublications: 'cards/setPublications',
+      setSearch: 'cards/setSearch'
+    }),
+
+    async submitHandlerSearch(e) {
+      console.log(JSON.stringify(this.category))
+      console.log(JSON.stringify(this.company))
+      console.log(this.date_from)
+      console.log(this.date_to)
+      await axios.post('http://127.0.0.1:5000/api/search/', {
+        headers: {'Content-type': 'application/json'},
+        keywords: JSON.stringify(this.category),
+        enterprise: JSON.stringify(this.company),
+        date_from: this.date_from === '' ? null : this.date_from,
+        date_to: this.date_to === '' ? null : this.date_to
+      })
+          .then(response => {
+            this.isSearch = true;
+            this.setPublications(response.data);
+            this.setSearch(this.isSearch);
+
+            this.$router.push({ name: 'list' });
+          }).catch(error => {
+            console.error('Ошибка при отправке:', error)
+          })
+
     },
   }
 }

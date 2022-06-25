@@ -1,14 +1,9 @@
-import { createStore } from 'vuex'
+import {createStore} from "vuex";
+import {publiсationsModule} from "./publiсationsModule";
+
 
 export default createStore({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    cards: publiсationsModule,
   }
 })
