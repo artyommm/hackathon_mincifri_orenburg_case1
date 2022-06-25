@@ -17,15 +17,18 @@ def make_envinronment():
     information_resources = [get_information_resource(i) for i in range(1, ir_amount)]
     enterprises = [get_enterprises(i) for i in range(1, enterprises_amount)]
 
-    publication_amount = 100
     dt_now = datetime.datetime.now()
-    publications = [get_publication(i, dt_now) for i in range(1, publication_amount + 1)]
 
+
+    """
+    publication_amount = 100
+    publications = [get_publication(i, dt_now) for i in range(1, publication_amount + 1)]
+   
     for publication in publications:
         obj = Publication(publication['id'], publication['title'], publication['date_of_publication'],
-                          publication['publication_url'])
+                          publication['publication_url'],)
         db.session.add(obj)
-
+    """
     for keyword in keywords:
         obj = KeyWord(keyword['id'], keyword['name'])
         db.session.add(obj)
@@ -43,7 +46,15 @@ def make_envinronment():
 
     for i in range(1, 100):
         for j in range(1, 5):
+            db.session.execute(f'INSERT INTO public.publication(id, title, date_of_publication, '
+                               f'publication_url, enterprise_id, "informationResource_id") '
+                               f"VALUES ({i}, {i}, '{dt_now}'::date, {i}, {j}, {j}) on conflict do nothing;")
+    db.session.commit()
+
+    for i in range(1, 100):
+        for j in range(1, 5):
             db.session.execute(f'INSERT INTO public.publication_keyword(publication_id, keyword_id) VALUES ({i}, {j});')
+
 
     db.session.commit()
 
