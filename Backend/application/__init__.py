@@ -8,14 +8,11 @@ app = Flask(__name__)
 # убираем ошибку CORS
 CORS(app)
 
-# конфиг
-# app.config['UPLOAD_FOLDER'] = 'C:/Users/mauta/Desktop/project-Tensor-main/Backend/upload'
 app.config['SECRET_KEY'] = 'ORENBOOGLE'
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:postgres@localhost:6432/orenboogle_database'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:6432/test_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-# временно не работает, т.к. моделей и роутов ещё нет
-# from application import models, route
+from application import models
