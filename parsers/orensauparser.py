@@ -35,33 +35,6 @@ def get_data(url, kws, cmpns):
         url=url, headers=headers)
 
     soup = BeautifulSoup(r.content, "html.parser")
-    # запись в файл
-    # with open("index.html", "w") as file:
-    #     for article in soup.find_all("div", class_="contentheading"):
-    #         siteUrl = resource + article.find('a')['href']
-
-    #         newsDateAttr = BeautifulSoup(requests.get(
-    #             url=siteUrl, headers=headers).content, "html.parser").find("div", class_="news_date")
-    #         newsDate = newsDateAttr.get_text().strip() if newsDateAttr else None
-
-    #         [day, month, year] = newsDate.split(
-    #             ' ') if newsDate else ['None', 'None', 'None']
-
-    #         month = months[month.upper()] if newsDate else 'None'
-
-    #         newsDate = '-'.join([day, month, year]) if newsDate else 'None'
-    #         articleObject = {
-    #             'company': cmpns,
-    #             'resource': resource,
-    #             'news': ' '.join(article.get_text().strip().split()),
-    #             'date': newsDate,
-    #             'link': siteUrl,
-    #             'categories': kws,
-    #         }
-
-    #         file.write(str(articleObject))
-    #         file.write('\n')
-    #         articles.append(articleObject)
 
     for article in soup.find_all("div", class_="contentheading"):
         siteUrl = resource + article.find('a')['href']
@@ -85,8 +58,6 @@ def get_data(url, kws, cmpns):
             'categories': kws,
         }
 
-        # file.write(str(articleObject))
-        # file.write('\n')
         articles.append(articleObject)
 
     return articles
@@ -99,11 +70,3 @@ def orensauParser(keywords=[], companies=[]):
 
     articles = get_data(searchUrl, keywords, companies)
     return articles
-    # print(articles)
-    # with open("index.html", "w") as file:
-    #     file.write(str(articles))
-
-
-# keywords = ['грант']
-# companies = []
-# orensauParser(keywords, companies)
