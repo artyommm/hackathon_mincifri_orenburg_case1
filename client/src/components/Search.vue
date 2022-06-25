@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
   name: 'Search',
@@ -56,22 +57,29 @@ export default {
       date_to: '',
     }
   },
+  async created() {
+    await axios.get('http://127.0.0.1:5000/api/enterprises/get_all')
+        .then(response_companies => {
+          this.companies = response_companies.data
+        }).catch(error => {
+          console.error('Ошибка при создании:', error)
+        })
+    await axios.get('http://127.0.0.1:5000/api/keywords/get_all')
+        .then(response_categories => {
+          this.categories = response_categories.data
+          console.log(response_categories)
+        }).catch(error => {
+          console.error('Ошибка при создании:', error)
+        })
+  },
   methods: {
     async submitHandlerSearch(e) {
-      this.$emit('updateStyle', {
-        isSearch: this.isSearch
-      })
       try {
-        const response = await axios.post('http://127.0.0.1:5000/api/user/passport', {
-          passportSeries: this.passportSeries,
-          passportNumber: this.passportId
-        }, {
-          headers: {Authorization:`Bearer ${localStorage.getItem('token')}`},
+        this.$emit('updateStyle', {
+          isSearch: this.isSearch
         })
-        console.log(response)
       } catch (error) {
-        console.log(error.request.response)
-      } finally {
+        console.error(error)
       }
     },
   }
