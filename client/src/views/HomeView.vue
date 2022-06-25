@@ -1,5 +1,8 @@
 <template>
   <div class="basic__wrapper d-flex flex-column  align-items-center justify-content-center">
+    <div>
+      <img src="@/assets/home.png" alt="OrenBoogle">
+    </div>
     <div class="d-flex justify-content-center align-items-center">
       <search></search>
     </div>
@@ -13,12 +16,6 @@ export default {
   name: 'HomeView',
   components: {
     Search
-  },
-  data() {
-    return {
-    }
-  },
-  methods: {
   }
 }
 </script>

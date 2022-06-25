@@ -35,6 +35,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
 .navigation__wrapper {
   margin-top: 10px;
 }

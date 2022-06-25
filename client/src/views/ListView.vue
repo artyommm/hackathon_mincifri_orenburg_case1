@@ -13,12 +13,6 @@ export default {
   name: 'ListView',
   components: {
     List
-  },
-  data() {
-    return {
-    }
-  },
-  methods: {
   }
 }
 </script>
