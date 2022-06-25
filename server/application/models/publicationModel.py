@@ -40,6 +40,9 @@ class Publication(db.Model):
         self.date_of_publication = date_of_publication
         self.publication_url = publication_url
 
+    def __eq__(self, other):
+        return self.title == other.title
+
 
 # класс для работы с полями в таблице User
 class PublicationSchema(ma.Schema):
