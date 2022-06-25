@@ -74,13 +74,22 @@ export default {
   },
   methods: {
     async submitHandlerSearch(e) {
-      try {
-        this.$emit('updateStyle', {
-          isSearch: this.isSearch
-        })
-      } catch (error) {
-        console.error(error)
-      }
+      // await axios.post('http://127.0.0.1:5000/api/search', {
+      //   keywords: this.category,
+      //   enterprises: this.company,
+      //   date_from: this.date_from,
+      //   date_to: this.date_to
+      // })
+      //     .then(response => {
+      //       console.log(response)
+      //       this.$emit('updateStyle', {
+      //         isSearch: this.isSearch
+      //       })
+      //     }).catch(error => {
+      //       console.error('Ошибка при отправке:', error)
+      //     })
+
+      await this.$router.push({ name: 'list' });
     },
   }
 }
