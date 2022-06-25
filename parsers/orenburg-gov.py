@@ -38,8 +38,9 @@ def get_data(url, keywords, enterprises):
 
     while soup is not None:
         for article in soup.find_all("div", class_="list__item"):
+            articleHeader = article.find('a', class_="list__item-link")
             siteUrl = resource + \
-                article.find('a', class_="list__item-link")['href']
+                articleHeader['href']
             newsDateAttrArray = article.find(
                 'div', class_="list__item-footer").find_all('div')
             newsDateAttr = None
@@ -61,7 +62,7 @@ def get_data(url, keywords, enterprises):
             articleObject = {
                 'enterprises': enterprises,
                 'resource': resource,
-                'news': ' '.join(article.find('div', class_='list__item-body').get_text().strip().split()),
+                'news': ' '.join(articleHeader.get_text().strip().split()),
                 'date': newsDate,
                 'link': siteUrl,
                 'keywords': keywords,
