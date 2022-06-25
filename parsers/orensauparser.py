@@ -2,6 +2,21 @@
 import requests
 from bs4 import BeautifulSoup
 
+months = {
+    'ЯНВАРЯ': '01',
+    'ФЕВРАЛЯ': '02',
+    'МАРТА': '03',
+    'АПРЕЛЯ': '04',
+    'МАЯ': '05',
+    'ИЮНЯ': '06',
+    'ИЮЛЯ': '07',
+    'АВГУСТА': '08',
+    'СЕНТЯБРЯ': '09',
+    'ОКТЯБРЯ': '10',
+    'НОЯБРЯ': '11',
+    'ДЕКАБРЯ': '12',
+}
+
 
 def get_data(url, kws, cmpns):
     articles = []
@@ -21,33 +36,74 @@ def get_data(url, kws, cmpns):
 
     soup = BeautifulSoup(r.content, "html.parser")
     # запись в файл
-    with open("index.html", "w") as file:
-        for article in soup.find_all("div", class_="contentheading"):
-            siteUrl = resource + article.find('a')['href']
-            newsDate = r = BeautifulSoup(requests.get(
-                url=siteUrl, headers=headers).content, "html.parser").find("div", class_="news_date").get_text()
-            print(newsDate)
-            file.write(siteUrl+'\n')
-            articleObject = {
-                'company': cmpns,
-                'resource': resource,
-                'news': article.get_text(),
-                'categories': kws,
-                # 'date':
-            }
-            articles.append(siteUrl)
+    # with open("index.html", "w") as file:
+    #     for article in soup.find_all("div", class_="contentheading"):
+    #         siteUrl = resource + article.find('a')['href']
+
+    #         newsDateAttr = BeautifulSoup(requests.get(
+    #             url=siteUrl, headers=headers).content, "html.parser").find("div", class_="news_date")
+    #         newsDate = newsDateAttr.get_text().strip() if newsDateAttr else None
+
+    #         [day, month, year] = newsDate.split(
+    #             ' ') if newsDate else ['None', 'None', 'None']
+
+    #         month = months[month.upper()] if newsDate else 'None'
+
+    #         newsDate = '-'.join([day, month, year]) if newsDate else 'None'
+    #         articleObject = {
+    #             'company': cmpns,
+    #             'resource': resource,
+    #             'news': ' '.join(article.get_text().strip().split()),
+    #             'date': newsDate,
+    #             'link': siteUrl,
+    #             'categories': kws,
+    #         }
+
+    #         file.write(str(articleObject))
+    #         file.write('\n')
+    #         articles.append(articleObject)
+
+    for article in soup.find_all("div", class_="contentheading"):
+        siteUrl = resource + article.find('a')['href']
+
+        newsDateAttr = BeautifulSoup(requests.get(
+            url=siteUrl, headers=headers).content, "html.parser").find("div", class_="news_date")
+        newsDate = newsDateAttr.get_text().strip() if newsDateAttr else None
+
+        [day, month, year] = newsDate.split(
+            ' ') if newsDate else ['None', 'None', 'None']
+
+        month = months[month.upper()] if newsDate else 'None'
+
+        newsDate = '-'.join([day, month, year]) if newsDate else 'None'
+        articleObject = {
+            'company': cmpns,
+            'resource': resource,
+            'news': ' '.join(article.get_text().strip().split()),
+            'date': newsDate,
+            'link': siteUrl,
+            'categories': kws,
+        }
+
+        # file.write(str(articleObject))
+        # file.write('\n')
+        articles.append(articleObject)
 
     return articles
 
 
-def main(keywords=[], companies=[]):
+def orensauParser(keywords=[], companies=[]):
     filter = '+'.join(keywords)+'+'+'+'.join(companies)  # до 20 символов
     searchUrl = "https://orensau.ru/ru/poisk?searchword=%s&ordering=&searchphrase=all&limit=0" % (
         filter)
 
-    print(get_data(searchUrl, keywords, companies))
+    articles = get_data(searchUrl, keywords, companies)
+    return articles
+    # print(articles)
+    # with open("index.html", "w") as file:
+    #     file.write(str(articles))
 
 
-keywords = ['грант']
-companies = []
-main(keywords, companies)
+# keywords = ['грант']
+# companies = []
+# orensauParser(keywords, companies)
