@@ -48,7 +48,7 @@ def get_data(url, keywords, enterprises):
     return articles
 
 
-def orenburgcciParser(keywords=[], enterprises=[]):
+def orenburgCciParser(keywords=[], enterprises=[]):
     filter = '+'.join(keywords)+'+'+'+'.join(enterprises)  # до 20 символов
     searchUrl = "https://orenburg-cci.ru/?s=%s&ixsl=1" % (
         filter)
