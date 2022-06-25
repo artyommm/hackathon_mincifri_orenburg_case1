@@ -11,7 +11,7 @@ CORS(app)
 # конфиг
 # app.config['UPLOAD_FOLDER'] = 'C:/Users/mauta/Desktop/project-Tensor-main/Backend/upload'
 app.config['SECRET_KEY'] = 'ORENBOOGLE'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/medcard_database'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:postgres@localhost:6432/orenboogle_database'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
