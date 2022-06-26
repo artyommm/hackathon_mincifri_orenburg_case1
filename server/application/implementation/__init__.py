@@ -4,3 +4,4 @@ from .enterprise import *
 from .search import *
 from .test import *
 from .parser import *
+from .publication import *
