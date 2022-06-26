@@ -19,10 +19,11 @@ GET_ALL = """ SELECT * FROM "{}" """
 
 SEARCH_ALL_PUBLICATIONS = """
     SELECT 
+        pb."id",
         en."name",
         pb."information_resource",
         pb."title",
-        pb."date_of_publication",
+        to_char(pb."date_of_publication", 'dd-mm-yyyy'),
         pb."publication_url",
         kw."name"
     FROM 
