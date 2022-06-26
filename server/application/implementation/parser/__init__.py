@@ -4,7 +4,7 @@ from application import app, db
 from application.models import Publication
 from application.common.const import FIND_RESOURCE
 from application.common.templates import GET_ALL
-from parsers.fipsParser import parsers
+from parsers.main_parser import get_parser
 from application.common.helpers import parse_date
 
 
@@ -18,7 +18,7 @@ def insert():
         enterprises_keywords.extend([(enterprise[1], keyword[1]) for keyword in keywords])
 
     for link in FIND_RESOURCE:
-        resource_parser = parsers.get(link)
+        resource_parser = get_parser(link)
         if not resource_parser:
             continue
 

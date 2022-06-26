@@ -14,5 +14,6 @@ def get_publication_format(data):
         'date_of_publication': data[2],
         'publication_url': data[3],
         'enterprise': data[4],
-        'information_resource': data[5]
+        'information_resource': data[5],
+        'keyword': data[6]
     }

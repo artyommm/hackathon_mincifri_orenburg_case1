@@ -6,16 +6,13 @@ SEARCH_PUBLICATIONS = """
         pb."publication_url",
         en."name",
         ir."name"
+        kw."name"
     FROM 
         "publication" pb
         JOIN "enterprise" en ON pb."enterprise_id" = en."id"
         JOIN "informationresource" ir ON pb."informationResource_id" = ir."id"
-        JOIN "publication_keyword" pk ON pb
+        JOIN "keyword" kw ON pb."keyword_id" = kw."id"
     WHERE 
-        pb."id" in (
-            SELECT DISTINCT "publication_id" FROM "publication_keyword" pk WHERE pk."keyword_id"=ANY('{keywords}')
-        ) AND
-        pb."enterprise_id" = {enterprise} AND
         pb."date_of_publication" BETWEEN '{date_from}'::date AND '{date_to}'::date
 """
 
