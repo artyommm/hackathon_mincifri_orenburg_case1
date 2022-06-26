@@ -29,6 +29,11 @@ export const publiсationsModule = {
                 state.cards = []
             state.cards = cards;
         },
+        deletePublication(state, card) {
+            if (!index)
+                return;
+            state.cards.remove(card)
+        },
         setAllPublications(state, cards) {
             if (!cards)
                 state.cards = []

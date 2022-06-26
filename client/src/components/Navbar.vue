@@ -43,6 +43,7 @@
 <script>
 import NavEl from "./NavEl";
 import {mapMutations, mapState} from 'vuex';
+import axios from "axios";
 
 export default {
   components: {
@@ -68,10 +69,15 @@ export default {
       this.$router.push('/login');
     },
 
-    update() {
-      // this.setAuth(false)
-      // localStorage.clear();
-      // this.$router.push('/login');
+    async update() {
+      alert('данные обновляются долго, необходимо подождать 3-5 минут, можете обновлять вкладку публикации...')
+      await axios.get(`http://127.0.0.1:5000/api/parser/insert_data/`)
+          .then(response => {
+            alert('данные обвновлены')
+            console.log(response)
+          }).catch(error => {
+            console.error('Ошибка при запросе:', error)
+          })
     },
 
     all_list() {
