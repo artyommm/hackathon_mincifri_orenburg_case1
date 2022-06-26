@@ -5,7 +5,7 @@ class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(45), nullable=False)
-    password = db.Column(db.String(45), nullable=False)
+    password = db.Column(db.String(80), nullable=False)
     role = db.Column(db.String(45), nullable=False)
 
     def __init__(self, public_id, login, password, role):

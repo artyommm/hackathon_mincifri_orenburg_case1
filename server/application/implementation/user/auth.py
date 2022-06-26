@@ -4,9 +4,9 @@ from pytz import timezone
 
 import jwt
 from flask import request, make_response, jsonify
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
-from application import app
+from application import app, db
 from application.models import User, user_schema
 from application.common.const import ERROR_MESSANGES, RESPONSE_CODES, STANDART_SESSION_TIME
 
@@ -44,7 +44,7 @@ def login():
     if not auth or not auth.username or not auth.password:
         return make_response(ERROR_MESSANGES['no_login_or_pass'], RESPONSE_CODES['unauthorized'])
 
-    user = User.query.filter_by(mail=auth.username).first()
+    user = User.query.filter_by(login=auth.username).first()
     if not user:
         return make_response(ERROR_MESSANGES['no_user'], RESPONSE_CODES['unauthorized'])
 
@@ -66,3 +66,14 @@ def login():
         })
 
     return make_response(ERROR_MESSANGES['incorrect_password'], RESPONSE_CODES['unauthorized'])
+
+
+def make_user(username, password, role):
+    try:
+        hashed_password = generate_password_hash(password, method='sha256')
+        user = User(username, password, role)
+        db.session.add(user)
+        db.session.commit()
+        return 'User successful added!'
+    except Exception as exc:
+        return str(exc)
