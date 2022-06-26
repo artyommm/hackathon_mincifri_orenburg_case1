@@ -1,13 +1,13 @@
-from fipsParser import fipsParser
-from npParser import npParser
-from iidfParser import iidfParser
-from mineconomyOrbParser import mineconomyOrbParser
-from msrOrbParser import msrOrbParser
-from orenburgCciParser import orenburgCciParser
-from orenburgGovParser import orenburGovParser
-from orenburgMediaParser import orenburgMediaParser
-from orenminParser import orenminParser
-from orensauParser import orensauParser
+from .fipsParser import fipsParser
+from .npParser import npParser
+from .iidfParser import iidfParser
+from .mineconomyOrbParser import mineconomyOrbParser
+from .msrOrbParser import msrOrbParser
+from .orenburgCciParser import orenburgCciParser
+from .orenburgGovParser import orenburGovParser
+from .orenburgMediaParser import orenburgMediaParser
+from .orenminParser import orenminParser
+from .orensauParser import orensauParser
 
 parserDict = {
     'https://fips.ru': fipsParser,
