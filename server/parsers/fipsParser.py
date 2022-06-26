@@ -35,8 +35,6 @@ def get_data(url, keywords, enterprises):
                 continue
             articleHeader = article
             siteUrl = resource + articleHeader['href']
-            print(articleHeader)
-            print(siteUrl)
 
             newsDateAttr = article.find_next('small')
 
@@ -62,7 +60,6 @@ def get_data(url, keywords, enterprises):
         soup = BeautifulSoup(requests.get(
             url=resource + nextPageTag['href'], headers=headers).content, "html.parser").find(
             'div', class_='search-page') if nextPageTag else None
-        # print(soup)
 
     return articles
 
