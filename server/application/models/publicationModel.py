@@ -4,10 +4,10 @@ from application import db, ma
 class Publication(db.Model):
     __tablename__ = 'publication'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text, nullable=False)
-    date_of_publication = db.Column(db.Date, nullable=False)
-    publication_url = db.Column(db.Text, nullable=False)
-    information_resource = db.Column(db.Text, nullable=False)
+    title = db.Column(db.Text, nullable=False, index=True)
+    date_of_publication = db.Column(db.Date, nullable=False, index=True)
+    publication_url = db.Column(db.Text, nullable=False, index=True)
+    information_resource = db.Column(db.Text, nullable=False, index=True)
 
     # отношения с другими таблицами
     enterprise_id = db.Column(db.Integer(), db.ForeignKey('enterprise.id'))

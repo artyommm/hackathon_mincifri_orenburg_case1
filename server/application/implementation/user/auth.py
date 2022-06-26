@@ -26,7 +26,9 @@ def token_required(function):
 
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
-            current_user = User.query.filter_by(id=data['id'].first())
+            current_user = User.query.filter_by(id=data['id']).first()
+            if not current_user:
+                return make_response(ERROR_MESSANGES['no_token'], RESPONSE_CODES['conflict'])
         except Exception:
             return make_response(ERROR_MESSANGES['token_timeout'], RESPONSE_CODES['conflict'])
 
