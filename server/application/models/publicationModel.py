@@ -24,6 +24,9 @@ class Publication(db.Model):
     def __eq__(self, other):
         return self.title == other.title
 
+    def __hash__(self):
+        return hash(self.title)
+
 
 # класс для работы с полями в таблице User
 class PublicationSchema(ma.Schema):
