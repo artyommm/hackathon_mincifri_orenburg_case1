@@ -24,4 +24,6 @@ parserDict = {
 
 
 def getParser(sourceLink):
+    if sourceLink not in parserDict.keys():
+        return None
     return parserDict[sourceLink]
