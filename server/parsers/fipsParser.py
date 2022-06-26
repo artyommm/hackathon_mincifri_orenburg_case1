@@ -50,17 +50,21 @@ def get_data(url, keywords, enterprises):
             newsDate = '-'.join([year, month, day]) if newsDate else 'None'
             articleObject = {
                 'enterprises': enterprises,
-                'resource': resource,
+                # 'resource': resource,
+                'resource': 'Федеральный институт промышленной собственности',
                 'news': articleHeader.get_text().strip(),
                 'date': newsDate,
                 'link': siteUrl,
                 'keywords': keywords,
             }
 
+            if len(articleObject['news']) < 15:
+                continue
+
             articles.append(articleObject)
         nextPageTag = soup.find(
             "a", text="След.")
-        print(nextPageTag)
+
         soup = BeautifulSoup(requests.get(
             url=resource + nextPageTag['href'], headers=headers).content, "html.parser").find(
             'div', class_='search-page') if nextPageTag else None
