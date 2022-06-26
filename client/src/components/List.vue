@@ -1,13 +1,13 @@
 <template>
   <div v-if="cards.length > 0">
-  <button type="button" class="btn btn-success">
-    <export-excel
-        :data   = "json_data"
-        :fields = "json_fields"
-        :name   = "file_name">
-      Выгрузить в xls
-    </export-excel>
-  </button>
+    <button type="button" @click="createXls" class="btn btn-success">
+      <export-excel
+          :data="json_data"
+          :fields="json_fields"
+          :name="file_name">
+        Выгрузить в xls
+      </export-excel>
+    </button>
     <table class="table table-striped">
       <thead>
       <tr>
@@ -46,7 +46,7 @@
 //class="overflow-hidden" пропуск
 //class="overflow-auto" скролл
 <script>
-import {mapState} from "vuex";
+import {mapMutations, mapState} from "vuex";
 import axios from "axios";
 
 export default {
@@ -60,23 +60,15 @@ export default {
       cards: [],
       file_name: '',
       json_fields: {
+        'ID': 'id',
         'Наименование предприятия организации': 'enterprise',
         'Дата новости (информации)': 'date_of_publication',
         'Наименование информационного ресурса': 'information_resource',
         'Наименование заголовка новости (информации)': 'title',
-        'Ссылка на новость (информацию)' : 'publication_url',
-        'Категория инвестиционной активности' : 'category',
+        'Ссылка на новость (информацию)': 'publication_url',
+        'Категория инвестиционной активности': 'keyword',
       },
-      json_data: [
-        {
-          'enterprise': 'Tony Peña',
-          'date_of_publication': 'New York',
-          'information_resource': 'United States',
-          'title': 'United States',
-          'publication_url': '1978-03-15',
-          'category': 'werwerewr'
-        }
-      ],
+      json_data: [],
       json_meta: [
         [
           {
@@ -90,22 +82,33 @@ export default {
   computed: {
     ...mapState({
       cards_request: state => state.cards.cards,
-      isAuth: state => state.auth.isAuth
-    })
+      isAuth: state => state.auth.isAuth,
+      all_cards: state => state.cards.allCards
+    }),
   },
   async created() {
-    if (this.isSearch)
-      this.cards = this.cards_request
-      const date = new Date()
-      this.file_name = `${this.cards[0].enterprise}_${this.cards[0].keyword}_${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
-      //передать данные в json
+    if (this.isSearch) {
+      this.cards = this.cards_request;
+      const date = new Date();
+      this.file_name = `${this.cards[0].enterprise}_${this.cards[0].keyword}_${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.xls`
+      this.json_data = this.cards;
+    }
     if (this.isAll) {
-      // await axios.get('http://127.0.0.1:5000/api/search/all/')
-      //     .then(response => {
-      //       this.setAllPublications(response.data);
-      //     }).catch(error => {
-      //       console.error('Ошибка при запросе:', error)
-      //     })
+      await axios.get('http://127.0.0.1:5000/api/publications/get_all')
+          .then(response => {
+            //вынести в стор
+            this.setAllPublications(response.data);
+            this.cards = this.all_cards;
+          }).catch(error => {
+            console.error('Ошибка при запросе:', error)
+          })
+    }
+  },
+  methods: {
+    ...mapMutations({
+      setAllPublications: 'cards/setAllPublications'
+    }),
+    createXls() {
     }
   }
 }

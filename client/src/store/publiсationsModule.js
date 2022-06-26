@@ -27,7 +27,7 @@ export const publiсationsModule = {
         setPublications(state, cards) {
             if (!cards)
                 state.cards = []
-                state.cards = cards;
+            state.cards = cards;
         },
         setAllPublications(state, cards) {
             if (!cards)
