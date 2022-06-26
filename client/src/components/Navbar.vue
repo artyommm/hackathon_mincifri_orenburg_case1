@@ -7,6 +7,11 @@
             :is-active="isSelected('/')"
         >Главная</nav-el>
         <nav-el
+            v-if="isSearch"
+            @click="$router.push('/list')"
+            :is-active="isSelected('/list')"
+        >Запрос</nav-el>
+        <nav-el
             @click="$router.push('/login')"
             :is-active="isSelected('/login')"
         >Вход</nav-el>
@@ -17,6 +22,7 @@
 
 <script>
 import NavEl from "./NavEl";
+import {mapState} from "vuex";
 
 export default {
   components: {
@@ -30,6 +36,11 @@ export default {
   },
   methods: {
     isSelected(href) { return this.$route.href === href },
+  },
+  computed: {
+    ...mapState({
+      isSearch: state => state.cards.isSearch
+    })
   }
 }
 </script>
@@ -41,6 +52,6 @@ export default {
 }
 
 .navigation {
-  width: 200px;
+  width: 350px;
 }
 </style>

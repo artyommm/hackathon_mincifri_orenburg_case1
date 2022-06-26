@@ -48,10 +48,12 @@ export default {
   computed: {
     ...mapState({
       cards_request: state => state.cards.cards,
+      isSearch: state => state.cards.isSearch
     })
   },
   async created() {
-    this.cards = this.cards_request
+    if (this.isSearch)
+      this.cards = this.cards_request
   }
 }
 </script>
