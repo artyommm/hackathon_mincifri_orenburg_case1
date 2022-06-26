@@ -34,18 +34,23 @@ class Publication(db.Model):
 
     informationResource_id = db.Column(db.Integer(), db.ForeignKey('informationresource.id'))
 
-    def __init__(self, public_id, title, date_of_publication, publication_url):
-        self.public_id = public_id
+    def __init__(self, title, date_of_publication, publication_url, enterprise_id, informationResource_id):
         self.title = title
         self.date_of_publication = date_of_publication
         self.publication_url = publication_url
+        self.enterprise_id = enterprise_id
+        self.informationResource_id = informationResource_id
+
+
+    def __eq__(self, other):
+        return self.title == other.title
 
 
 # класс для работы с полями в таблице User
 class PublicationSchema(ma.Schema):
     class Meta:
         fields = (
-            'id', 'title', 'date_of_publication', 'publication_url')
+            'title', 'date_of_publication', 'publication_url', 'enterprise_id', 'informationResource_id')
 
 
 # объекты для отправки и приёмов запросов
