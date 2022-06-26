@@ -1,7 +1,8 @@
 <template>
   <div class="navigation__wrapper d-flex flex-row-reverse">
     <nav class="navigation">
-      <div class="d-flex justify-content-around">
+      <div
+          class="d-flex justify-content-around">
         <nav-el
             @click="$router.push('/')"
             :is-active="isSelected('/')"
@@ -12,9 +13,25 @@
             :is-active="isSelected('/list')"
         >Запрос</nav-el>
         <nav-el
+            v-if="!isAuth"
             @click="$router.push('/login')"
             :is-active="isSelected('/login')"
         >Вход</nav-el>
+        <nav-el
+            v-if="isAuth"
+            @click="$router.push('/list')"
+            :is-active="isSelected('/list')"
+        >Публикации</nav-el>
+        <nav-el
+            v-if="isAuth"
+            @click="update"
+            :is-active="isSelected('/update')"
+        >Обновить</nav-el>
+        <nav-el
+            v-if="isAuth"
+            @click="logout"
+            :is-active="isSelected('/logout')"
+        >Выход</nav-el>
       </div>
     </nav>
   </div>
@@ -22,7 +39,7 @@
 
 <script>
 import NavEl from "./NavEl";
-import {mapState} from "vuex";
+import {mapMutations, mapState} from 'vuex';
 
 export default {
   components: {
@@ -35,11 +52,28 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setAuth: 'auth/setAuth',
+      setSearch: 'cards/setSearch'
+    }),
     isSelected(href) { return this.$route.href === href },
+    logout() {
+      this.setAuth(false)
+      this.setSearch(false)
+      localStorage.clear();
+      this.$router.push('/login');
+    },
+
+    update() {
+      // this.setAuth(false)
+      // localStorage.clear();
+      // this.$router.push('/login');
+    }
   },
   computed: {
     ...mapState({
-      isSearch: state => state.cards.isSearch
+      isSearch: state => state.cards.isSearch,
+      isAuth: state => state.auth.isAuth
     })
   }
 }
@@ -52,6 +86,6 @@ export default {
 }
 
 .navigation {
-  width: 350px;
+  width: 500px;
 }
 </style>

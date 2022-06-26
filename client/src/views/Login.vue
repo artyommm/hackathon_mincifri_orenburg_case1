@@ -93,8 +93,9 @@ export default {
         await axios.get('http://127.0.0.1:5000/api/auth/auth', {
           headers: {'Authorization': `Basic ${token}`}
         }).then(response => {
-          localStorage.setItem('token', response.data.token)
-          this.setAuth(true)
+          localStorage.setItem('token', response.data.token);
+          this.setAuth(true);
+          this.$router.push('/');
         }).catch(error => {
           console.error('Ошибка авторизации', error)
           if (error.request.status === 401)
