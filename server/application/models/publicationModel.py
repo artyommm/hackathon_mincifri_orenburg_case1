@@ -16,18 +16,10 @@ class Publication(db.Model):
                                    db.Column('publication_id', db.Integer, db.ForeignKey('publication.id')),
                                    db.Column('keyword_id', db.Integer, db.ForeignKey('keyword.id'))
                                    )
-    # публикация_запрос
-    publication_request = db.Table('publication_request',
-                                   db.Column('publication_id', db.Integer, db.ForeignKey('publication.id')),
-                                   db.Column('request_id', db.Integer, db.ForeignKey('request.id'))
-                                   )
     # -------------------------------------------------------------------------------------------------------------
 
     # отношения с другими таблицами
     keyWord_id = db.relationship('KeyWord', secondary=publication_keyword,
-                                 backref=db.backref('publication', lazy='select'))
-
-    request_id = db.relationship('Request', secondary=publication_request,
                                  backref=db.backref('publication', lazy='select'))
 
     enterprise_id = db.Column(db.Integer(), db.ForeignKey('enterprise.id'))

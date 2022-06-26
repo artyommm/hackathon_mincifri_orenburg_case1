@@ -48,7 +48,7 @@ def make_envinronment():
                 f"INSERT INTO public.publication_keyword(publication_id, keyword_id) VALUES ({i}, {j}) on conflict do nothing;")
 
     db.session.commit()
-    # сделала сешн коммит, потому что иначе в таблицу publication_keyword ничего не добавится, т.к в keyword ничего нет
+
     """
     for i in range(1, 100):
         for j in range(1, 5):
@@ -92,9 +92,3 @@ def get_enterprises(number):
         'name': f'enterprises_{number}'
     }
 
-
-def get_request(number):
-    return {
-        'id': number,
-        'name': f'request_{number}'
-    }
