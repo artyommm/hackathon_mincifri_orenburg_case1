@@ -15,3 +15,7 @@ RESPONSE_CODES = {
     'unauthorized': 401,
     'bad_request': 400
 }
+
+FIND_RESOURCE = [
+    ''
+]
