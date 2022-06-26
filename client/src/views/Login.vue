@@ -85,21 +85,18 @@ export default {
         this.isValidate = true;
         alert('Информация не корректна')
       } else {
-        try {
-          const username = this.v$.login.$model
-          const password = this.v$.password.$model
-          const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
-          const response = await axios.get('http://127.0.0.1:5000/api/auth/', {
-            headers: {'Authorization': `Basic ${token}`}
-          })
+        const username = this.v$.login.$model
+        const password = this.v$.password.$model
+        const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
+        await axios.get('http://127.0.0.1:5000/api/auth/', {
+          headers: {'Authorization': `Basic ${token}`}
+        }).then(request => {
           localStorage.setItem('token', response.data.token)
           this.setAuth(true)
-        } catch (error) {
+        }).catch(error => {
           console.error('Ошибка авторизации', error)
           alert('Пользователя не существует')
-        } finally {
-
-        }
+        })
       }
     }
   },
