@@ -17,5 +17,20 @@ RESPONSE_CODES = {
 }
 
 FIND_RESOURCE = [
-    ''
+    r'https://orenburg-cci.ru/',
+    r'https://orenburg-gov.ru/',
+    r'https://mineconomy.orb.ru/',
+    r'https://orenmin.ru/',
+    r'https://orensau.ru/',
+    r'https://fips.ru/'
+]
+
+KEYWORDS = [
+    'технологии', 'импортозамещение', 'инновации', 'научные разработки',
+    'патенты', 'гранты', 'исследования', 'технология', 'импортозамещение',
+    'инновация', 'научная разработка', 'патенты', 'грант', 'исследование'
+]
+
+ENTERPRISES = [
+    'Газпром'
 ]
