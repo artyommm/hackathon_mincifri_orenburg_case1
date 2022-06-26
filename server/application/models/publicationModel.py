@@ -5,9 +5,9 @@ class Publication(db.Model):
     # __table_args__ = {'extend_existing': True}
     __tablename__ = 'publication'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(45), nullable=False)
+    title = db.Column(db.Text, nullable=False)
     date_of_publication = db.Column(db.Date, nullable=False)
-    publication_url = db.Column(db.String(200), nullable=False)
+    publication_url = db.Column(db.Text, nullable=False)
     information_resource = db.Column(db.Text, nullable=False)
 
     # промежуточные таблицы для создания отношений----------------------------------------------------------------
