@@ -19,8 +19,8 @@
         >Вход</nav-el>
         <nav-el
             v-if="isAuth"
-            @click="$router.push('/list')"
-            :is-active="isSelected('/list')"
+            @click="all_list"
+            :is-active="isSelected('/all_list')"
         >Публикации</nav-el>
         <nav-el
             v-if="isAuth"
@@ -54,7 +54,8 @@ export default {
   methods: {
     ...mapMutations({
       setAuth: 'auth/setAuth',
-      setSearch: 'cards/setSearch'
+      setSearch: 'cards/setSearch',
+      setAllCards: 'cards/setAllCards'
     }),
     isSelected(href) { return this.$route.href === href },
     logout() {
@@ -68,6 +69,11 @@ export default {
       // this.setAuth(false)
       // localStorage.clear();
       // this.$router.push('/login');
+    },
+
+    all_list() {
+      this.setAllCards(true);
+      this.$router.push('/all_list');
     }
   },
   computed: {
