@@ -15,7 +15,7 @@ parserDict = {
     'https://www.iidf.ru': iidfParser,
     'https://mineconomy.orb.ru': mineconomyOrbParser,
     'https://msr.orb.ru': msrOrbParser,
-    'https://orenburg-cci.ru/': orenburgCciParser,
+    'https://orenburg-cci.ru': orenburgCciParser,
     'https://orenburg-gov.ru':  orenburGovParser,
     'https://orenburg.media': orenburgMediaParser,
     'https://orenmin.ru': orenminParser,
