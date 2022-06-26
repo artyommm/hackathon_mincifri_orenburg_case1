@@ -14,4 +14,4 @@ def delete(current_user, publication_id):
     db.session.delete(publication)
     db.session.commit()
 
-    return make_response('Статья успешно удалена', 403)
+    return make_response('Публикация успешно удалена', 200)
