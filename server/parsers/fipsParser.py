@@ -58,7 +58,7 @@ def get_data(url, keywords, enterprises):
                 'keywords': keywords,
             }
 
-            if len(articleObject['news']) < 15:
+            if len(articleObject['news']) < 15 or articleObject['news'].find(' ') == -1:
                 continue
 
             articles.append(articleObject)

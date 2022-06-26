@@ -73,6 +73,9 @@ def get_data(url, keywords, enterprises):
                 'keywords': keywords,
             }
 
+            if len(articleObject['news']) < 15 or articleObject['news'].find(' ') == -1:
+                continue
+
             articles.append(articleObject)
         nextPageTag = soup.find(
             "a", class_="pagenav__page pagenav__page--next")
