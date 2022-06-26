@@ -50,7 +50,7 @@ def login():
 
     if check_password_hash(user.password, auth.password):
         token = jwt.encode({
-            'public_id': user.public_id,
+            'id': user.id,
             'exp': datetime.now(timezone('Europe/Moscow')) + timedelta(minutes=STANDART_SESSION_TIME)
         }, app.config['SECRET_KEY'])
 
@@ -59,9 +59,9 @@ def login():
         return jsonify({
             'token': token.decode('UTF-8'),
             'user': {
-                'id': result.id,
-                'login': result.login,
-                'role': result.role
+                'id': result['id'],
+                'login': result['login'],
+                'role': result['role']
             }
         })
 
