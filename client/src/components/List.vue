@@ -1,5 +1,13 @@
 <template>
   <div v-if="cards.length > 0">
+  <button type="button" class="btn btn-success">
+    <export-excel
+        :data   = "json_data"
+        :fields = "json_fields"
+        :name   = "file_name">
+      Выгрузить в xls
+    </export-excel>
+  </button>
     <table class="table table-striped">
       <thead>
       <tr>
@@ -10,7 +18,6 @@
         <th scope="col">Дата</th>
         <th scope="col">Ссылка</th>
         <th scope="col">Категории</th>
-        <th v-if="isAuth" scope="col">Архив</th>
         <th v-if="isAuth" scope="col">Удалить</th>
       </tr>
       </thead>
@@ -22,14 +29,7 @@
         <td>{{ card.title }}</td>
         <td>{{ card.date_of_publication }}</td>
         <td>{{ card.publication_url }}</td>
-        <td>
-          <span v-for="(category, index) in card.categories" v-bind:key="index">
-            {{ category.name }}
-          </span>
-        </td>
-        <td v-if="isAuth">
-          <button type="button" class="btn btn-secondary">Архив</button>
-        </td>
+        <td>{{ card.keyword }}</td>
         <td v-if="isAuth">
           <button type="button" class="btn btn-danger">
             &#9587;
@@ -53,11 +53,38 @@ export default {
   name: 'Search',
   props: {
     isAll: Boolean,
-    isSearch: Boolean
+    isSearch: Boolean,
   },
   data() {
     return {
-      cards: []
+      cards: [],
+      file_name: '',
+      json_fields: {
+        'Наименование предприятия организации': 'enterprise',
+        'Дата новости (информации)': 'date_of_publication',
+        'Наименование информационного ресурса': 'information_resource',
+        'Наименование заголовка новости (информации)': 'title',
+        'Ссылка на новость (информацию)' : 'publication_url',
+        'Категория инвестиционной активности' : 'category',
+      },
+      json_data: [
+        {
+          'enterprise': 'Tony Peña',
+          'date_of_publication': 'New York',
+          'information_resource': 'United States',
+          'title': 'United States',
+          'publication_url': '1978-03-15',
+          'category': 'werwerewr'
+        }
+      ],
+      json_meta: [
+        [
+          {
+            'key': 'charset',
+            'value': 'utf-8'
+          }
+        ]
+      ],
     }
   },
   computed: {
@@ -69,6 +96,9 @@ export default {
   async created() {
     if (this.isSearch)
       this.cards = this.cards_request
+      const date = new Date()
+      this.file_name = `${this.cards[0].enterprise}_${this.cards[0].keyword}_${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+      //передать данные в json
     if (this.isAll) {
       // await axios.get('http://127.0.0.1:5000/api/search/all/')
       //     .then(response => {

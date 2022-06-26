@@ -1,6 +1,9 @@
 <template>
   <div class="navigation__wrapper d-flex flex-row-reverse">
-    <nav class="navigation">
+    <nav :class="{
+      'navigation__all': !isAuth,
+      'navigation': isAuth
+    }">
       <div
           class="d-flex justify-content-around">
         <nav-el
@@ -90,7 +93,9 @@ export default {
 .navigation__wrapper {
   margin-top: 10px;
 }
-
+.navigation__all {
+  width: 350px;
+}
 .navigation {
   width: 500px;
 }
