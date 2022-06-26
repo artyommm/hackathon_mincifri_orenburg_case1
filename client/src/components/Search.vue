@@ -79,10 +79,7 @@ export default {
     }),
 
     async submitHandlerSearch(e) {
-      console.log(JSON.stringify(this.category))
-      console.log(JSON.stringify(this.company))
-      console.log(this.date_from)
-      console.log(this.date_to)
+
       await axios.post('http://127.0.0.1:5000/api/search/', {
         headers: {'Content-type': 'application/json'},
         keywords: JSON.stringify(this.category),

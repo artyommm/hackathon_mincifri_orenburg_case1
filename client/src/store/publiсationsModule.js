@@ -20,7 +20,6 @@ export const publiсationsModule = {
             if (!cards)
                 state.cards = []
             state.cards = cards;
-            console.log(state)
         },
     },
     namespaced:true,
