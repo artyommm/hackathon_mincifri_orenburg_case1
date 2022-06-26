@@ -4,6 +4,7 @@ from application import app, db
 from application.common.templates import SEARCH_PUBLICATIONS
 from application.common.helpers import parse_date, get_publication_format
 from application.common.const import ERROR_MESSANGES, RESPONSE_CODES
+from .delete import delete
 
 
 @app.route('/api/search/', methods=['POST'])
