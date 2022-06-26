@@ -14,8 +14,8 @@ def make_envinronment():
 
     keywords_amount, ir_amount, enterprises_amount = 100, 100, 100
     keywords = [get_keyword(i) for i in range(1, keywords_amount + 1)]
-    information_resources = [get_information_resource(i) for i in range(1, ir_amount)]
-    enterprises = [get_enterprises(i) for i in range(1, enterprises_amount)]
+    information_resources = [get_information_resource(i) for i in range(1, ir_amount + 1)]
+    enterprises = [get_enterprises(i) for i in range(1, enterprises_amount + 1)]
 
     dt_now = datetime.datetime.now()
 
@@ -49,14 +49,6 @@ def make_envinronment():
 
     db.session.commit()
 
-    """
-    for i in range(1, 100):
-        for j in range(1, 5):
-            db.session.execute(f'INSERT INTO public.publication(id, title, date_of_publication, '
-                               f'publication_url, enterprise_id, "informationResource_id") '
-                               f"VALUES ({i}, {i}, '{dt_now}'::date, {i}, {j}, {j}) on conflict do nothing;")
-    db.session.commit()
-"""
 
 
     return make_response('Записи успешно добавлены', 200)
