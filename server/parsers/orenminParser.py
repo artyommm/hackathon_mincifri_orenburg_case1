@@ -53,7 +53,7 @@ def get_data(url, keywords, enterprises):
 
         month = months[month.upper()] if newsDate else 'None'
 
-        newsDate = '.'.join([day, month, year]) if newsDate else 'None'
+        newsDate = '-'.join([year, month, day]) if newsDate else 'None'
         articleObject = {
             'enterprises': enterprises,
             'resource': resource,
