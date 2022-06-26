@@ -6,7 +6,7 @@ from application.common.helpers import parse_date, get_publication_format
 from application.common.const import ERROR_MESSANGES, RESPONSE_CODES
 
 
-@app.route('/api/search/', methods=['GET'])
+@app.route('/api/search/', methods=['POST'])
 def search():
     data = request.json
     keywords = data.get('keywords')

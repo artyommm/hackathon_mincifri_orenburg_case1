@@ -59,9 +59,9 @@ def login():
         return jsonify({
             'token': token.decode('UTF-8'),
             'user': {
-                'id': result.id,
-                'login': result.login,
-                'role': result.role
+                'id': result['id'],
+                'login': result['login'],
+                'role': result['role']
             }
         })
 
@@ -71,7 +71,7 @@ def login():
 def make_user(username, password, role):
     try:
         hashed_password = generate_password_hash(password, method='sha256')
-        user = User(username, password, role)
+        user = User(username, hashed_password, role)
         db.session.add(user)
         db.session.commit()
         return 'User successful added!'

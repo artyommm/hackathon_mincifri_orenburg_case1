@@ -12,14 +12,16 @@ from application.common.helpers import parse_date
 def insert():
     enterprises = [elem[1] for elem in db.session.execute(GET_ALL.format('enterprise')).fetchall()]
     keywords = [elem[1] for elem in db.session.execute(GET_ALL.format('keyword')).fetchall()]
+
     enterprises_keywords = []
     for enterprise in enterprises:
         enterprises_keywords.extend([(enterprise, keyword) for keyword in keywords])
+
     for ek in enterprises_keywords:
         data = fipsParser([ek[0]], [ek[1]])
         publications = [get_publication_obj(elem) for elem in data]
-        if publications:
-            db.session.bulk_save_objects(publications)
+        for publication in publications:
+            db.session.add(publication)
             db.session.commit()
 
 
@@ -30,6 +32,5 @@ def get_publication_obj(data):
     enterprise = data['enterprises']
     ir = data['resource']
     keywords = ['keywords']
-
 
     return Publication(title, date, link, enterprise, ir)

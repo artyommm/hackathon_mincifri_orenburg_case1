@@ -10,6 +10,7 @@ SEARCH_PUBLICATIONS = """
         "publication" pb
         JOIN "enterprise" en ON pb."enterprise_id" = en."id"
         JOIN "informationresource" ir ON pb."informationResource_id" = ir."id"
+        JOIN "publication_keyword" pk ON pb
     WHERE 
         pb."id" in (
             SELECT DISTINCT "publication_id" FROM "publication_keyword" pk WHERE pk."keyword_id"=ANY('{keywords}')
