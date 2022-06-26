@@ -35,17 +35,19 @@ def get_data(url, keywords, enterprises):
                 continue
             articleHeader = article
             siteUrl = resource + articleHeader['href']
-            print(articleHeader)
-            print(siteUrl)
 
             newsDateAttr = article.find_next('small')
 
             newsDate = newsDateAttr.get_text().strip().split(' ')[
                 1] if newsDateAttr else None
+
+            if newsDate is None:
+                continue
+
             [day, month, year] = newsDate.split('.') if newsDate else [
                 'None', 'None', 'None']
 
-            newsDate = '.'.join([day, month, year]) if newsDate else 'None'
+            newsDate = '-'.join([year, month, day]) if newsDate else 'None'
             articleObject = {
                 'enterprises': enterprises,
                 'resource': resource,
@@ -62,7 +64,6 @@ def get_data(url, keywords, enterprises):
         soup = BeautifulSoup(requests.get(
             url=resource + nextPageTag['href'], headers=headers).content, "html.parser").find(
             'div', class_='search-page') if nextPageTag else None
-        # print(soup)
 
     return articles
 
