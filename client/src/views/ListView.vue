@@ -24,5 +24,6 @@ export default {
 .list__home {
   height: 100%;
   width: 80%;
+  margin-top: 10px;
 }
 </style>

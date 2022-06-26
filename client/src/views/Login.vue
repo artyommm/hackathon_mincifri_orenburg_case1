@@ -51,6 +51,7 @@ import {required, minLength} from '@vuelidate/validators'
 import useVuelidate from "@vuelidate/core";
 import axios from "axios";
 import {mapMutations, mapState} from 'vuex';
+const Buffer = require('buffer').Buffer;
 
 export default {
   name: "Login",
@@ -87,9 +88,10 @@ export default {
       } else {
         const username = this.v$.login.$model
         const password = this.v$.password.$model
+        const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
 
         await axios.get('http://127.0.0.1:5000/api/auth/auth', {
-          headers: {'Authorization': `Basic ${username}:${password}`}
+          headers: {'Authorization': `Basic ${token}`}
         }).then(request => {
           localStorage.setItem('token', response.data.token)
           this.setAuth(true)
