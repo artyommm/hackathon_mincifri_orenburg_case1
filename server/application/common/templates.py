@@ -12,6 +12,8 @@ SEARCH_PUBLICATIONS = """
         JOIN "enterprise" en ON pb."enterprise_id" = en."id"
         JOIN "keyword" kw ON pb."keyWord_id" = kw."id"
     WHERE 
+        pb."keyWord_id" = {keyword} AND
+        pb."enterprise_id" = {enterprise} AND
         pb."date_of_publication" BETWEEN '{date_from}'::date AND '{date_to}'::date
 """
 
