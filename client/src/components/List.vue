@@ -31,7 +31,7 @@
         <td>{{ card.publication_url }}</td>
         <td>{{ card.keyword }}</td>
         <td v-if="isAuth">
-          <button type="button" class="btn btn-danger">
+          <button type="button" @click="deletePublication(card.id)" class="btn btn-danger">
             &#9587;
           </button>
         </td>
@@ -108,7 +108,20 @@ export default {
     ...mapMutations({
       setAllPublications: 'cards/setAllPublications'
     }),
+    //создание при нажатии, не успевает, пришлось при загрузке переносить данные в json
     createXls() {
+    },
+    async deletePublication(publication_id) {
+      console.log(publication_id)
+      console.log(localStorage.getItem('token'))
+      await axios.delete(`http://127.0.0.1:5000/api/delete/${publication_id}`, {
+        headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+      })
+          .then(response => {
+            console.log(response)
+          }).catch(error => {
+            console.error('Ошибка при запросе:', error)
+          })
     }
   }
 }
