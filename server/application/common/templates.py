@@ -5,7 +5,7 @@ SEARCH_PUBLICATIONS = """
         to_char(pb."date_of_publication", 'dd-mm-yyyy'),
         pb."publication_url",
         en."name",
-        ir."information_resource",
+        pb."information_resource",
         kw."name"
     FROM 
         "publication" pb
@@ -16,3 +16,17 @@ SEARCH_PUBLICATIONS = """
 """
 
 GET_ALL = """ SELECT * FROM "{}" """
+
+SEARCH_ALL_PUBLICATIONS = """
+    SELECT 
+        en."name",
+        pb."information_resource",
+        pb."title",
+        pb."date_of_publication",
+        pb."publication_url",
+        kw."name"
+    FROM 
+        "publication" pb
+        JOIN "enterprise" en ON pb."enterprise_id" = en."id"
+        JOIN "keyword" kw ON pb."keyWord_id" = kw."id"
+"""

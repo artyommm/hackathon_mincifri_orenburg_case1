@@ -1,5 +1,3 @@
-"""
-
 from datetime import date
 from flask import request, jsonify, make_response
 from application import app, db
@@ -53,4 +51,3 @@ def get_enterprise_id(elem, enterprises):
 def get_keyword_id(elem, keywords):
     result = list(filter(lambda x: x[1] == elem, keywords))
     return result[0][0] if result else None
-"""

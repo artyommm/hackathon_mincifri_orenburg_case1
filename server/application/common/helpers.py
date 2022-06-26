@@ -17,3 +17,14 @@ def get_publication_format(data):
         'information_resource': data[5],
         'keyword': data[6]
     }
+
+
+def get_all_publication_format(data):
+    return {
+        'title': data[0],
+        'date_of_publication': data[1],
+        'publication_url': data[2],
+        'enterprise': data[3],
+        'information_resource': data[4],
+        'keyword': data[5]
+    }
