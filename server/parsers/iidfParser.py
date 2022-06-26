@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
-
 
 months = {
     'ЯНВАРЯ': '01',
@@ -21,7 +19,7 @@ months = {
 
 def get_data(url, keywords, enterprises):
     articles = []
-    resource = 'https://mineconomy.orb.ru'
+    resource = 'https://www.iidf.ru'
 
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -38,31 +36,40 @@ def get_data(url, keywords, enterprises):
     soup = BeautifulSoup(r.content, "html.parser")
 
     while soup is not None:
-        for article in soup.find_all("div", class_="news__item"):
-            articleHeader = article.find('h2', class_="news__title").find('a')
+        for article in soup.find_all(
+                'p', class_='search-result-item__title'):
+
+            articleHeader = article.find('a')
             siteUrl = resource + articleHeader['href']
 
             newsDateAttr = BeautifulSoup(requests.get(
-                url=siteUrl, headers=headers).content, "html.parser").find('span', class_="news__info-value")
+                url=siteUrl, headers=headers).content, "html.parser").find('span', 'media-slider-item__date')
 
-            newsDate = newsDateAttr.get_text().strip().split() if newsDateAttr else None
+            newsDateAttr = newsDateAttr.get_text().strip() if newsDateAttr else None
+
+            if newsDateAttr is None:
+                continue
+
+            newsDate = newsDateAttr.strip().split(' ') if newsDateAttr else None
 
             if newsDate is None:
                 continue
 
-            [day, month, year] = newsDate if newsDate else [
+            [day, month, year] = newsDate[0], newsDate[1], newsDate[2] if newsDate else [
                 'None', 'None', 'None']
 
             if len(day) == 1:
                 day = '0' + day  # press F
 
             month = months[month.upper()] if newsDate else 'None'
-
+            if year.find(',') != -1:
+                year = year[:-1]
             newsDate = '-'.join([year, month, day]) if newsDate else 'None'
+
             articleObject = {
                 'enterprises': enterprises,
                 'resource': resource,
-                'news': ' '.join(articleHeader.get_text().strip().split()),
+                'news': articleHeader.get_text().strip(),
                 'date': newsDate,
                 'link': siteUrl,
                 'keywords': keywords,
@@ -70,16 +77,17 @@ def get_data(url, keywords, enterprises):
 
             articles.append(articleObject)
         nextPageTag = soup.find(
-            "a", class_="modern-page-next")
+            "div", class_='nav-pages')
+
         soup = BeautifulSoup(requests.get(
-            url=resource + nextPageTag['href'], headers=headers).content, "html.parser") if nextPageTag else None
+            url=resource + nextPageTag.find('span').findNext('a')['href'], headers=headers).content, "html.parser") if nextPageTag else None
 
     return articles
 
 
-def mineconomyOrbParser(keywords=[], enterprises=[]):
+def iidfParser(keywords=[], enterprises=[]):
     filter = '+'.join(keywords)+'+'+'+'.join(enterprises)
-    searchUrl = "https://mineconomy.orb.ru/search/?q=%s" % (
+    searchUrl = "https://www.iidf.ru/search/?q=%s" % (
         filter)
 
     articles = get_data(searchUrl, keywords, enterprises)

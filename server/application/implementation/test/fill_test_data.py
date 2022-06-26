@@ -2,7 +2,7 @@ import datetime
 
 from flask import make_response
 from application import app, db
-from application.models import KeyWord, InformationResource, Enterprise, Publication
+from application.models import KeyWord, Enterprise, Publication
 
 
 @app.route('/api/fill_test_data/')

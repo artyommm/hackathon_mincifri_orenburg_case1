@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
-
 
 months = {
     'ЯНВАРЯ': '01',
@@ -21,7 +19,7 @@ months = {
 
 def get_data(url, keywords, enterprises):
     articles = []
-    resource = 'https://mineconomy.orb.ru'
+    resource = 'https://msr.orb.ru'
 
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -77,9 +75,9 @@ def get_data(url, keywords, enterprises):
     return articles
 
 
-def mineconomyOrbParser(keywords=[], enterprises=[]):
+def msrOrbParser(keywords=[], enterprises=[]):
     filter = '+'.join(keywords)+'+'+'+'.join(enterprises)
-    searchUrl = "https://mineconomy.orb.ru/search/?q=%s" % (
+    searchUrl = "https://msr.orb.ru/search/?q=%s" % (
         filter)
 
     articles = get_data(searchUrl, keywords, enterprises)

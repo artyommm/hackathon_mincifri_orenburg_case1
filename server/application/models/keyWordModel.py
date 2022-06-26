@@ -6,6 +6,9 @@ class KeyWord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45), nullable=False)
 
+    # отношения с другими таблицами
+    publication = db.relationship('Publication', backref='keyword')
+
     def __init__(self, name):
         self.name = name
 
