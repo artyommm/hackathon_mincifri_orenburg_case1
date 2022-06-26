@@ -22,8 +22,8 @@
       </div>
       <div class="search__item">
         <label for="category" class="form-label">Категории</label>
-        <select required v-model="v$.category.$model" id="category" class="form-select choices-multiple" multiple>
-<!--          <option selected disabled>Выберите категории</option>-->
+        <select required v-model="v$.category.$model" id="category" class="form-select">
+          <option selected disabled>Выберите категории</option>
           <option v-for="category in categories"
                   v-bind:key="category.id"
                   v-bind:value="category.id">
@@ -110,7 +110,7 @@ export default {
       } else {
         await axios.post('http://127.0.0.1:5000/api/search/', {
           headers: {'Content-type': 'application/json'},
-          keywords: JSON.stringify(this.category),
+          keyword: JSON.stringify(this.category),
           enterprise: JSON.stringify(this.company),
           date_from: this.date_from === '' ? null : this.date_from,
           date_to: this.date_to === '' ? null : this.date_to

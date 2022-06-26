@@ -16,8 +16,7 @@ class Enterprise(db.Model):
 # класс для работы с полями в таблице Enterprise
 class EnterpriseSchema(ma.Schema):
     class Meta:
-        fields = (
-            'id', 'name')
+        fields = ('id', 'name')
 
 
 # объекты для отправки и приёмов запросов

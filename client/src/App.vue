@@ -20,7 +20,6 @@ export default {
     })
   },
   beforeMount() {
-    console.log(this)
     if(localStorage.getItem('token')) {
       this.setAuth(true)
     }

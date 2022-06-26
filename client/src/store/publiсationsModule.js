@@ -27,10 +27,17 @@ export const publiсationsModule = {
         setPublications(state, cards) {
             if (!cards)
                 state.cards = []
-            if (state.isAll)
-                state.allCards = cards;
-            else
-                state.cards = cards;
+            state.cards = cards;
+        },
+        deletePublication(state, card) {
+            if (!index)
+                return;
+            state.cards.remove(card)
+        },
+        setAllPublications(state, cards) {
+            if (!cards)
+                state.cards = []
+            state.allCards = cards;
         },
     },
     namespaced:true,

@@ -4,16 +4,16 @@ from application import db, ma
 class Publication(db.Model):
     __tablename__ = 'publication'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text, nullable=False)
-    date_of_publication = db.Column(db.Date, nullable=False)
-    publication_url = db.Column(db.Text, nullable=False)
-    information_resource = db.Column(db.Text, nullable=False)
+    title = db.Column(db.Text, nullable=False, index=True)
+    date_of_publication = db.Column(db.Date, nullable=False, index=True)
+    publication_url = db.Column(db.Text, nullable=False, index=True)
+    information_resource = db.Column(db.Text, nullable=False, index=True)
 
     # отношения с другими таблицами
     enterprise_id = db.Column(db.Integer(), db.ForeignKey('enterprise.id'))
     keyWord_id = db.Column(db.Integer(), db.ForeignKey('keyword.id'))
 
-    def __init__(self, title, date_of_publication, publication_url, enterprise_id, information_resource,keyWord_id):
+    def __init__(self, title, date_of_publication, publication_url, enterprise_id, information_resource, keyWord_id):
         self.title = title
         self.date_of_publication = date_of_publication
         self.publication_url = publication_url
@@ -23,6 +23,9 @@ class Publication(db.Model):
 
     def __eq__(self, other):
         return self.title == other.title
+
+    def __hash__(self):
+        return hash(self.title)
 
 
 # класс для работы с полями в таблице User

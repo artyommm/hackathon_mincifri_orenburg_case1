@@ -59,12 +59,16 @@ def get_data(url, keywords, enterprises):
             newsDate = '-'.join([year, month, day]) if newsDate else 'None'
             articleObject = {
                 'enterprises': enterprises,
-                'resource': resource,
+                # 'resource': resource,
+                'resource': 'Министерство социального развития Оренбургской области',
                 'news': ' '.join(articleHeader.get_text().strip().split()),
                 'date': newsDate,
                 'link': siteUrl,
                 'keywords': keywords,
             }
+
+            if len(articleObject['news']) < 15 or articleObject['news'].find(' ') == -1:
+                continue
 
             articles.append(articleObject)
         nextPageTag = soup.find(

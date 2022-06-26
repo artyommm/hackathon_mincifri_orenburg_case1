@@ -1,6 +1,9 @@
 <template>
   <div class="navigation__wrapper d-flex flex-row-reverse">
-    <nav class="navigation">
+    <nav :class="{
+      'navigation__all': !isAuth,
+      'navigation': isAuth
+    }">
       <div
           class="d-flex justify-content-around">
         <nav-el
@@ -26,7 +29,7 @@
             v-if="isAuth"
             @click="update"
             :is-active="isSelected('/update')"
-        >Обновить</nav-el>
+        >Репарсинг</nav-el>
         <nav-el
             v-if="isAuth"
             @click="logout"
@@ -40,6 +43,7 @@
 <script>
 import NavEl from "./NavEl";
 import {mapMutations, mapState} from 'vuex';
+import axios from "axios";
 
 export default {
   components: {
@@ -65,10 +69,15 @@ export default {
       this.$router.push('/login');
     },
 
-    update() {
-      // this.setAuth(false)
-      // localStorage.clear();
-      // this.$router.push('/login');
+    async update() {
+      alert('данные обновляются долго, необходимо подождать 3-5 минут, можете обновлять вкладку публикации...')
+      await axios.get(`http://127.0.0.1:5000/api/parser/insert_data/`)
+          .then(response => {
+            alert('данные обвновлены')
+            console.log(response)
+          }).catch(error => {
+            console.error('Ошибка при запросе:', error)
+          })
     },
 
     all_list() {
@@ -90,7 +99,9 @@ export default {
 .navigation__wrapper {
   margin-top: 10px;
 }
-
+.navigation__all {
+  width: 350px;
+}
 .navigation {
   width: 500px;
 }
