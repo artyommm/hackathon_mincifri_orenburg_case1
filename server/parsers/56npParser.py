@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
 
 
 def get_data(url, keywords, enterprises):
     articles = []
-    resource = 'https://orenburg-cci.ru/'
+    resource = 'https://56np.ru'
 
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -22,39 +21,47 @@ def get_data(url, keywords, enterprises):
     soup = BeautifulSoup(r.content, "html.parser")
 
     while soup is not None:
-        for article in soup.find_all("h2", class_="entry-title"):
-            siteUrl = article.find('a')['href']
-            newsDateAttr = BeautifulSoup(requests.get(
-                url=siteUrl, headers=headers).content, "html.parser").find("span", class_="news-date")
-            newsDate = newsDateAttr.get_text().strip() if newsDateAttr else None
+        for article in soup.find_all(
+                'a', class_='search-link'):
 
-            if newsDate is None:
+            articleHeader = article
+            siteUrl = articleHeader['href']
+
+            newsDateAttr = BeautifulSoup(requests.get(
+                url=siteUrl, headers=headers).content, "html.parser").find('time')
+
+            newsDateAttr = newsDateAttr['datetime'] if newsDateAttr else None
+
+            if newsDateAttr is None:
                 continue
 
-            [day, month, year] = newsDate.split(
-                '.') if newsDate else ['None', 'None', 'None']
+            newsDate = newsDateAttr.strip().split(
+                'T')[0] if newsDateAttr else None
 
-            newsDate = '-'.join([year, month, day]) if newsDate else 'None'
             articleObject = {
                 'enterprises': enterprises,
                 'resource': resource,
-                'news': ' '.join(article.get_text().strip().split()),
+                'news': articleHeader.get_text().strip(),
                 'date': newsDate,
                 'link': siteUrl,
-                'categories': keywords,
+                'keywords': keywords,
             }
 
             articles.append(articleObject)
-        nextPageTag = soup.find("div", class_="nav-previous")
+        nextPageTag = soup.find(
+            "span", class_='page-numbers current')
+
+        nextPageTag = nextPageTag.find_next('a', class_='page-numbers')
+
         soup = BeautifulSoup(requests.get(
-            url=nextPageTag.find('a')['href'], headers=headers).content, "html.parser") if nextPageTag else None
+            url=nextPageTag['href'], headers=headers).content, "html.parser") if nextPageTag else None
 
     return articles
 
 
-def orenburgCciParser(keywords=[], enterprises=[]):
-    filter = '+'.join(keywords)+'+'+'+'.join(enterprises)  # до 20 символов
-    searchUrl = "https://orenburg-cci.ru/?s=%s&ixsl=1" % (
+def npParser(keywords=[], enterprises=[]):
+    filter = '+'.join(keywords)+'+'+'+'.join(enterprises)
+    searchUrl = "https://56np.ru/?s=%s" % (
         filter)
 
     articles = get_data(searchUrl, keywords, enterprises)

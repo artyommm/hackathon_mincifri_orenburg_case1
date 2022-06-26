@@ -1,27 +1,10 @@
-# -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
 
 
-months = {
-    'ЯНВАРЯ': '01',
-    'ФЕВРАЛЯ': '02',
-    'МАРТА': '03',
-    'АПРЕЛЯ': '04',
-    'МАЯ': '05',
-    'ИЮНЯ': '06',
-    'ИЮЛЯ': '07',
-    'АВГУСТА': '08',
-    'СЕНТЯБРЯ': '09',
-    'ОКТЯБРЯ': '10',
-    'НОЯБРЯ': '11',
-    'ДЕКАБРЯ': '12',
-}
-
-
 def get_data(url, keywords, enterprises):
     articles = []
-    resource = 'https://mineconomy.orb.ru'
+    resource = 'https://orenburg.media'
 
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -38,14 +21,16 @@ def get_data(url, keywords, enterprises):
     soup = BeautifulSoup(r.content, "html.parser")
 
     while soup is not None:
-        for article in soup.find_all("div", class_="news__item"):
-            articleHeader = article.find('h2', class_="news__title").find('a')
-            siteUrl = resource + articleHeader['href']
+        for article in soup.find_all(
+                'div', class_='post'):
 
-            newsDateAttr = BeautifulSoup(requests.get(
-                url=siteUrl, headers=headers).content, "html.parser").find('span', class_="news__info-value")
+            articleHeader = article.find('h2', class_='post-title').find('a')
+            siteUrl = articleHeader['href']
 
-            newsDate = newsDateAttr.get_text().strip().split() if newsDateAttr else None
+            newsDateAttr = article.find(
+                'div', class_='post-byline').get_text().strip().split()[0]
+
+            newsDate = newsDateAttr.split('.') if newsDateAttr else None
 
             if newsDate is None:
                 continue
@@ -53,16 +38,11 @@ def get_data(url, keywords, enterprises):
             [day, month, year] = newsDate if newsDate else [
                 'None', 'None', 'None']
 
-            if len(day) == 1:
-                day = '0' + day  # press F
-
-            month = months[month.upper()] if newsDate else 'None'
-
             newsDate = '-'.join([year, month, day]) if newsDate else 'None'
             articleObject = {
                 'enterprises': enterprises,
                 'resource': resource,
-                'news': ' '.join(articleHeader.get_text().strip().split()),
+                'news': articleHeader.get_text().strip(),
                 'date': newsDate,
                 'link': siteUrl,
                 'keywords': keywords,
@@ -70,16 +50,17 @@ def get_data(url, keywords, enterprises):
 
             articles.append(articleObject)
         nextPageTag = soup.find(
-            "a", class_="modern-page-next")
+            "a", class_='next page-numbers')
+
         soup = BeautifulSoup(requests.get(
-            url=resource + nextPageTag['href'], headers=headers).content, "html.parser") if nextPageTag else None
+            url=nextPageTag['href'], headers=headers).content, "html.parser") if nextPageTag else None
 
     return articles
 
 
-def mineconomyOrbParser(keywords=[], enterprises=[]):
+def orenburgMediaParser(keywords=[], enterprises=[]):
     filter = '+'.join(keywords)+'+'+'+'.join(enterprises)
-    searchUrl = "https://mineconomy.orb.ru/search/?q=%s" % (
+    searchUrl = "https://orenburg.media/?s=%s" % (
         filter)
 
     articles = get_data(searchUrl, keywords, enterprises)

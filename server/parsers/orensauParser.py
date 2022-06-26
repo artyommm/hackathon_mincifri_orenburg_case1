@@ -43,12 +43,15 @@ def get_data(url, keywords, enterprises):
             url=siteUrl, headers=headers).content, "html.parser").find("div", class_="news_date")
         newsDate = newsDateAttr.get_text().strip() if newsDateAttr else None
 
+        if newsDate is None:
+            continue
+
         [day, month, year] = newsDate.split(
             ' ') if newsDate else ['None', 'None', 'None']
 
         month = months[month.upper()] if newsDate else 'None'
 
-        newsDate = '.'.join([day, month, year]) if newsDate else 'None'
+        newsDate = '-'.join([year, month, day]) if newsDate else 'None'
         articleObject = {
             'enterprises': enterprises,
             'resource': resource,
