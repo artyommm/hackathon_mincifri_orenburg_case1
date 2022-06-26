@@ -68,7 +68,8 @@ def get_data(url, keywords, enterprises):
 
             articleObject = {
                 'enterprises': enterprises,
-                'resource': resource,
+                # 'resource': resource,
+                'resource': 'Фонд развития интернет-инициатив',
                 'news': articleHeader.get_text().strip(),
                 'date': newsDate,
                 'link': siteUrl,

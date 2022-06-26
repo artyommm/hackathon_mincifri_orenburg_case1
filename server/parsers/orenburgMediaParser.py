@@ -41,7 +41,8 @@ def get_data(url, keywords, enterprises):
             newsDate = '-'.join([year, month, day]) if newsDate else 'None'
             articleObject = {
                 'enterprises': enterprises,
-                'resource': resource,
+                # 'resource': resource,
+                'resource': "Оренбург Медиа",
                 'news': articleHeader.get_text().strip(),
                 'date': newsDate,
                 'link': siteUrl,
