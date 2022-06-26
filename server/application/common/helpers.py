@@ -13,6 +13,7 @@ def get_publication_format(data):
         'title': data[1],
         'date_of_publication': data[2],
         'publication_url': data[3],
-        'enterprise_id': data[4],
-        'informationRecource_id': data[5]
+        'enterprise': data[4],
+        'information_resource': data[5],
+        'keyword': data[6]
     }
