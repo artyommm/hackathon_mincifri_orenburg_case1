@@ -27,7 +27,7 @@
           <label for="password" class="form-label">Пароль</label>
           <input
               required
-              minlength="6"
+              minlength="5"
               id="password"
               type="password"
               class="form-control"
@@ -35,7 +35,7 @@
               v-model.trim="v$.password.$model"
           >
           <div class="invalid-feedback">
-            Поле пароль некорректно (минимум 6 символа)
+            Поле пароль некорректно (минимум 5 символа)
           </div>
         </div>
         <button class="btn btn-primary" type="submit">
@@ -70,7 +70,7 @@ export default {
       },
       password: {
         required,
-        minLength: minLength(6)
+        minLength: minLength(5)
       }
     }
   },
@@ -87,15 +87,16 @@ export default {
       } else {
         const username = this.v$.login.$model
         const password = this.v$.password.$model
-        const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
-        await axios.get('http://127.0.0.1:5000/api/auth/', {
-          headers: {'Authorization': `Basic ${token}`}
+
+        await axios.get('http://127.0.0.1:5000/api/auth/auth', {
+          headers: {'Authorization': `Basic ${username}:${password}`}
         }).then(request => {
           localStorage.setItem('token', response.data.token)
           this.setAuth(true)
         }).catch(error => {
           console.error('Ошибка авторизации', error)
-          alert('Пользователя не существует')
+          if (error.request.status === 401)
+            alert('Пользователя не существует')
         })
       }
     }
