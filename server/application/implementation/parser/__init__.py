@@ -7,15 +7,20 @@ from application.models import Publication
 @app.route('/api/parser/insert_data')
 def insert(link):
     data = parser(link)
-    publications = []
+    publications = [get_publication_obj(elem) for elem in data]
+    db.session.add(publications)
+    db.session.commit()
 
 
 def parser(link):
-    pass
+    return []
 
 
 def get_publication_obj(data):
     title = data['news']
     date = data['date']
     link = data['link']
-    enterprise = data['enterprise']
+    enterprise = data['enterprises']
+    ir = data['resource']
+    keywords = ['keywords']
+    return Publication(title, date, link, enterprise, ir)

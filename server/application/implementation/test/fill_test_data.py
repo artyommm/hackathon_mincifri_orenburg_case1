@@ -39,7 +39,7 @@ def make_envinronment():
         obj = Publication(publication['title'], publication['date_of_publication'],
                           publication['publication_url'], publication['enterprise_id'],
                           publication['informationResource_id'])
-    db.session.add(obj)
+        db.session.add(obj)
     db.session.commit()
 
     for i in range(1, 100):
