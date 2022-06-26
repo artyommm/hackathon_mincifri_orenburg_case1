@@ -11,6 +11,9 @@ def delete(current_user, publication_id):
     if current_user.role != 'admin':
         return make_response('Недостаточно прав!', 403)
 
+    if not publication:
+        return make_response('Произошла неизвестная ошибка', 404)
+
     db.session.delete(publication)
     db.session.commit()
 
