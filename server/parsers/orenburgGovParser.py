@@ -50,6 +50,10 @@ def get_data(url, keywords, enterprises):
                 newsDateAttr = newsDateAttrArray[0]
 
             newsDate = newsDateAttr.get_text().strip().split() if newsDateAttr else None
+
+            if newsDate is None:
+                continue
+
             [day, month, year] = newsDate[2], newsDate[3], newsDate[4] if newsDate else [
                 'None', 'None', 'None']
 

@@ -31,6 +31,10 @@ def get_data(url, keywords, enterprises):
                 'div', class_='post-byline').get_text().strip().split()[0]
 
             newsDate = newsDateAttr.split('.') if newsDateAttr else None
+
+            if newsDate is None:
+                continue
+
             [day, month, year] = newsDate if newsDate else [
                 'None', 'None', 'None']
 

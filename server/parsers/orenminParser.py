@@ -45,6 +45,10 @@ def get_data(url, keywords, enterprises):
         newsDateAttr = article.find_next('dd', class_="result-created")
 
         newsDate = newsDateAttr.get_text().strip().split() if newsDateAttr else None
+
+        if newsDate is None:
+            continue
+
         [day, month, year] = newsDate[1], newsDate[2], newsDate[3] if newsDate else [
             'None', 'None', 'None']
 

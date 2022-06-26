@@ -46,6 +46,10 @@ def get_data(url, keywords, enterprises):
                 url=siteUrl, headers=headers).content, "html.parser").find('span', class_="news__info-value")
 
             newsDate = newsDateAttr.get_text().strip().split() if newsDateAttr else None
+
+            if newsDate is None:
+                continue
+
             [day, month, year] = newsDate if newsDate else [
                 'None', 'None', 'None']
 
