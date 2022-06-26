@@ -21,10 +21,11 @@ def get_publication_format(data):
 
 def get_all_publication_format(data):
     return {
-        'title': data[0],
-        'date_of_publication': data[1],
-        'publication_url': data[2],
-        'enterprise': data[3],
-        'information_resource': data[4],
-        'keyword': data[5]
+        'id': data[0],
+        'enterprise': data[1],
+        'information_resource': data[2],
+        'title': data[3],
+        'date_of_publication': data[4],
+        'publication_url': data[5],
+        'keyword': data[6]
     }
