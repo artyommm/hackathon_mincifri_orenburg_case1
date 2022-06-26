@@ -8,6 +8,9 @@
         Выгрузить в xls
       </export-excel>
     </button>
+<!--    <button type="button" @click="$router.go(0)" class="btn btn-danger xls">-->
+<!--        Обновить таблицу-->
+<!--    </button>-->
     <div class="container">
     <div class="row">
     <div class="col-12">
@@ -20,7 +23,7 @@
           <th scope="col">Новость</th>
           <th scope="col">Дата</th>
           <th scope="col">Ссылка</th>
-          <th scope="col">Категории</th>
+          <th scope="col">Категория</th>
           <th v-if="isAuth" scope="col">Удалить</th>
         </tr>
         </thead>
@@ -102,6 +105,9 @@ export default {
   async created() {
     if (this.isSearch) {
       this.cards = this.cards_request;
+      const date = new Date();
+      this.file_name = `${this.cards[0].enterprise}_${this.cards[0].keyword}_${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.xls`
+      this.json_data = this.cards;
     }
     if (this.isAll) {
       await axios.get('http://127.0.0.1:5000/api/publications/get_all')
@@ -109,6 +115,9 @@ export default {
             //вынести в стор
             this.setAllPublications(response.data);
             this.cards = this.all_cards;
+            const date = new Date();
+            this.file_name = `${this.cards[0].enterprise}_${this.cards[0].keyword}_${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.xls`
+            this.json_data = this.cards;
           }).catch(error => {
             console.error('Ошибка при запросе:', error)
           })
@@ -121,10 +130,6 @@ export default {
     }),
     //создание при нажатии, не успевает, пришлось при загрузке переносить данные в json
     createXls() {
-      this.cards = this.cards_request;
-      const date = new Date();
-      this.file_name = `${this.cards[0].enterprise}_${this.cards[0].keyword}_${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.xls`
-      this.json_data = this.cards;
     },
     async deletePublication(publication_id, card) {
       console.log(publication_id)
@@ -133,8 +138,19 @@ export default {
       })
           .then(response => {
             alert('данные удалены, обновление займет время')
-            this.deletePublication(card)
-            this.cards = this.cards_request;
+            // this.deletePublication(card)
+            // this.cards = this.cards_request;
+            // const date = new Date();
+            // this.file_name = `${this.cards[0].enterprise}_${this.cards[0].keyword}_${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.xls`
+            // this.json_data = this.cards;
+            // const data = [];
+            // this.cards.map(el => {
+            //   console.log(el)
+            //   if (el.id !== card.id)
+            //     data.push(el)
+            // })
+            // this.cards = data;
+            // console.log(this.cards)
           }).catch(error => {
             console.error('Ошибка при запросе:', error)
           })

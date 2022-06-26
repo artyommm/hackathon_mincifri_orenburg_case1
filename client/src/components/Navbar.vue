@@ -29,7 +29,7 @@
             v-if="isAuth"
             @click="update"
             :is-active="isSelected('/update')"
-        >Обновить</nav-el>
+        >Репарсинг</nav-el>
         <nav-el
             v-if="isAuth"
             @click="logout"
