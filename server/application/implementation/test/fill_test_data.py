@@ -14,7 +14,6 @@ def make_envinronment():
 
     keywords_amount, ir_amount, enterprises_amount = 100, 100, 100
     keywords = [get_keyword(i) for i in range(1, keywords_amount + 1)]
-    information_resources = [get_information_resource(i) for i in range(1, ir_amount + 1)]
     enterprises = [get_enterprises(i) for i in range(1, enterprises_amount + 1)]
 
     dt_now = datetime.datetime.now()
@@ -23,32 +22,20 @@ def make_envinronment():
     publications = [get_publication(i, dt_now) for i in range(1, publication_amount + 1)]
 
     for keyword in keywords:
-        obj = KeyWord(keyword['id'], keyword['name'])
-        db.session.add(obj)
-
-    for ir in information_resources:
-        obj = InformationResource(ir['id'], ir['name'])
+        obj = KeyWord(keyword['name'])
         db.session.add(obj)
 
     for enterprise in enterprises:
-        obj = Enterprise(enterprise['id'], enterprise['name'])
+        obj = Enterprise(enterprise['name'])
         db.session.add(obj)
     db.session.commit()
 
     for publication in publications:
         obj = Publication(publication['title'], publication['date_of_publication'],
                           publication['publication_url'], publication['enterprise_id'],
-                          publication['informationResource_id'])
+                          publication['information_resource'], publication['keyWord_id'],)
         db.session.add(obj)
     db.session.commit()
-
-    for i in range(1, 100):
-        for j in range(1, 5):
-            db.session.execute(
-                f"INSERT INTO public.publication_keyword(publication_id, keyword_id) VALUES ({i}, {j}) on conflict do nothing;")
-
-    db.session.commit()
-
 
 
     return make_response('Записи успешно добавлены', 200)
@@ -60,7 +47,8 @@ def get_publication(number, date):
         'date_of_publication': date,
         'publication_url': f'URL-{number}',
         'enterprise_id': number,
-        'informationResource_id': number
+        'information_resource': f'URL-{number}',
+        'keyWord_id': number
     }
 
 
@@ -71,16 +59,8 @@ def get_keyword(number):
     }
 
 
-def get_information_resource(number):
-    return {
-        'id': number,
-        'name': f'information_resource_{number}'
-    }
-
-
 def get_enterprises(number):
     return {
-        'id': number,
         'name': f'enterprises_{number}'
     }
 

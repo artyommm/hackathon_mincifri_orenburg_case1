@@ -13,7 +13,7 @@ class Publication(db.Model):
     enterprise_id = db.Column(db.Integer(), db.ForeignKey('enterprise.id'))
     keyWord_id = db.Column(db.Integer(), db.ForeignKey('keyword.id'))
 
-    def __init__(self, title, date_of_publication, publication_url, enterprise_id, information_resource,keyWord_id):
+    def __init__(self, title, date_of_publication, publication_url, enterprise_id, information_resource, keyWord_id):
         self.title = title
         self.date_of_publication = date_of_publication
         self.publication_url = publication_url

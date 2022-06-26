@@ -4,7 +4,7 @@ from application.models import Publication
 
 
 @app.route('/api/delete/<publication_id>', methods=['DELETE'])
-def search(current_user, publication_id):
+def delete(current_user, publication_id):
     publication = Publication.query.filter_by(id=publication_id).first()
     if current_user.role != 'admin':
         return make_response('Недостаточно прав!', 403)
