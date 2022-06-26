@@ -45,6 +45,9 @@ def get_data(url, keywords, enterprises):
                 'categories': keywords,
             }
 
+            if len(articleObject['news']) < 15 or articleObject['news'].find(' ') == -1:
+                continue
+
             articles.append(articleObject)
         nextPageTag = soup.find("div", class_="nav-previous")
         soup = BeautifulSoup(requests.get(
