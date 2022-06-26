@@ -1,18 +1,25 @@
 <template>
   <div className="basic__wrapper d-flex flex-column  align-items-center justify-content-center">
     <div className="list__home">
-      <list></list>
+      <list :isAll="isAll"></list>
     </div>
   </div>
 </template>
 
 <script>
 import List from "@/components/List";
+import {mapState} from "vuex";
 
 export default {
-  name: 'ListView',
+  name: 'AllListView',
   components: {
     List
+  },
+  computed: {
+    ...mapState({
+      isAuth: state => state.auth.isAuth,
+      isAll: state => state.cards.isAll
+    })
   }
 }
 </script>

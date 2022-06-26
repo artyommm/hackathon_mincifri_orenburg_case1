@@ -1,18 +1,24 @@
 <template>
   <div class="basic__wrapper d-flex flex-column  align-items-center justify-content-center">
     <div class="list__home">
-      <list></list>
+      <list :isSearch="isSearch"></list>
     </div>
   </div>
 </template>
 
 <script>
 import List from "@/components/List";
+import {mapState} from "vuex";
 
 export default {
   name: 'ListView',
   components: {
     List
+  },
+  computed: {
+    ...mapState({
+      isSearch: state => state.cards.isSearch
+    })
   }
 }
 </script>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
 import ListView from "@/views/ListView";
+import AllListView from "@/views/AllListView";
 
 const routes = [
   {
@@ -22,7 +23,7 @@ const routes = [
   {
     path: '/all_list',
     name: 'all_list',
-    component: ListView
+    component: AllListView
   }
 ]
 

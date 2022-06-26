@@ -51,6 +51,10 @@ import axios from "axios";
 
 export default {
   name: 'Search',
+  props: {
+    isAll: Boolean,
+    isSearch: Boolean
+  },
   data() {
     return {
       cards: []
@@ -59,21 +63,19 @@ export default {
   computed: {
     ...mapState({
       cards_request: state => state.cards.cards,
-      isSearch: state => state.cards.isSearch,
-      isAuth: state => state.auth.isAuth,
-      isAll: state => state.cards.isAll
+      isAuth: state => state.auth.isAuth
     })
   },
   async created() {
-    if (this.isSearch && !this.isAll)
+    if (this.isSearch)
       this.cards = this.cards_request
     if (this.isAll) {
-      await axios.get('http://127.0.0.1:5000/api/search/all/')
-          .then(response => {
-            this.setPublications(response.data);
-          }).catch(error => {
-            console.error('Ошибка при запросе:', error)
-          })
+      // await axios.get('http://127.0.0.1:5000/api/search/all/')
+      //     .then(response => {
+      //       this.setAllPublications(response.data);
+      //     }).catch(error => {
+      //       console.error('Ошибка при запросе:', error)
+      //     })
     }
   }
 }
