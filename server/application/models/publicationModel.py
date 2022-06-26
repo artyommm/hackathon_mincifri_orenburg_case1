@@ -8,6 +8,7 @@ class Publication(db.Model):
     title = db.Column(db.String(45), nullable=False)
     date_of_publication = db.Column(db.Date, nullable=False)
     publication_url = db.Column(db.String(200), nullable=False)
+    information_resource = db.Column(db.Text, nullable=False)
 
     # промежуточные таблицы для создания отношений----------------------------------------------------------------
 
@@ -24,14 +25,12 @@ class Publication(db.Model):
 
     enterprise_id = db.Column(db.Integer(), db.ForeignKey('enterprise.id'))
 
-    informationResource_id = db.Column(db.Integer(), db.ForeignKey('informationresource.id'))
-
-    def __init__(self, title, date_of_publication, publication_url, enterprise_id, informationResource_id):
+    def __init__(self, title, date_of_publication, publication_url, enterprise_id, information_resource):
         self.title = title
         self.date_of_publication = date_of_publication
         self.publication_url = publication_url
         self.enterprise_id = enterprise_id
-        self.informationResource_id = informationResource_id
+        self.information_resource = information_resource
 
 
     def __eq__(self, other):
@@ -42,7 +41,7 @@ class Publication(db.Model):
 class PublicationSchema(ma.Schema):
     class Meta:
         fields = (
-            'title', 'date_of_publication', 'publication_url', 'enterprise_id', 'informationResource_id')
+            'title', 'date_of_publication', 'publication_url', 'enterprise_id', 'information_resource')
 
 
 # объекты для отправки и приёмов запросов
