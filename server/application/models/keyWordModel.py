@@ -16,7 +16,7 @@ class KeyWord(db.Model):
 # класс для работы с полями в таблице KeyWord
 class KeyWordSchema(ma.Schema):
     class Meta:
-        fields = ('name',)
+        fields = ('id', 'name')
 
 
 # объекты для отправки и приёмов запросов

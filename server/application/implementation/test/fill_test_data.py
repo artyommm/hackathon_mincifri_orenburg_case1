@@ -47,7 +47,7 @@ def get_publication(number, date):
         'date_of_publication': date,
         'publication_url': f'URL-{number}',
         'enterprise_id': number,
-        'information_resource': f'URL-{number}',
+        'information_resource': f'information_resource-{number}',
         'keyWord_id': number
     }
 
@@ -61,6 +61,7 @@ def get_keyword(number):
 
 def get_enterprises(number):
     return {
+        'id': number,
         'name': f'enterprises_{number}'
     }
 
