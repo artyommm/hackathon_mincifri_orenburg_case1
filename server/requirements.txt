@@ -17,3 +17,5 @@ flask-marshmallow
 cors
 flask-api
 flask-cors
+beautifulsoup4
+requests

@@ -10,3 +10,5 @@ SEARCH_PUBLICATIONS = """
         pb."enterprise_id" = {enterprise} AND
         pb."date_of_publication" BETWEEN '{date_from}'::date AND '{date_to}'::date
 """
+
+GET_ALL = """ SELECT * FROM "{}" """

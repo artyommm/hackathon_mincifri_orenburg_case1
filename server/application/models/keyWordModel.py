@@ -6,8 +6,7 @@ class KeyWord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45), nullable=False)
 
-    def __init__(self, public_id, name):
-        self.public_id = public_id
+    def __init__(self, name):
         self.name = name
 
 
