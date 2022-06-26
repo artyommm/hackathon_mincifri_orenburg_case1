@@ -1,6 +1,6 @@
 <template>
-  <div class="basic__wrapper d-flex flex-column  align-items-center justify-content-center">
-    <div class="list__home">
+  <div className="basic__wrapper d-flex flex-column  align-items-center justify-content-center">
+    <div className="list__home">
       <list></list>
     </div>
   </div>
@@ -21,6 +21,7 @@ export default {
 .basic__wrapper {
   height: 100%;
 }
+
 .list__home {
   height: 100%;
   width: 80%;

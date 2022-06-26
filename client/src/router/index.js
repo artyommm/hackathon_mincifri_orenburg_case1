@@ -18,6 +18,11 @@ const routes = [
     path: '/list',
     name: 'list',
     component: ListView
+  },
+  {
+    path: '/all_list',
+    name: 'all_list',
+    component: ListView
   }
 ]
 

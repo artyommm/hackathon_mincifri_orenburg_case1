@@ -1,20 +1,38 @@
 <template>
   <div class="search__wrapper d-flex justify-content-center">
-  <form class="search" @submit.prevent="submitHandlerSearch">
+  <form class="search needs-validation" @submit.prevent="submitHandlerSearch"
+        :class="{
+              'was-validated': isValidate
+            }"
+        novalidate>
     <div class="search__header d-flex flex-column">
       <div class="search__item">
         <label for="company" class="form-label">Компании</label>
-        <select v-model="company" id="company" class="form-select ">
+        <select required v-model="v$.company.$model" id="company" class="form-select ">
           <option selected disabled>Выберите предприятие</option>
-          <option v-for="company in companies" v-bind:key="company.id" v-bind:value="company.id">{{company.name}}</option>
+          <option v-for="company in companies"
+                  v-bind:key="company.id"
+                  v-bind:value="company.id">
+            {{company.name}}
+          </option>
         </select>
+        <div class="invalid-feedback">
+          Поле компании обязательно
+        </div>
       </div>
       <div class="search__item">
         <label for="category" class="form-label">Категории</label>
-        <select v-model="category" id="category" class="form-select choices-multiple" multiple>
+        <select required v-model="v$.category.$model" id="category" class="form-select choices-multiple" multiple>
 <!--          <option selected disabled>Выберите категории</option>-->
-          <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{category.name}}</option>
+          <option v-for="category in categories"
+                  v-bind:key="category.id"
+                  v-bind:value="category.id">
+            {{category.name}}
+          </option>
         </select>
+        <div class="invalid-feedback">
+          Поле категории обязательно
+        </div>
       </div>
       <div class="search__item">
         <label class="form-label">Промежуток времени</label>
@@ -35,27 +53,33 @@
 
 <script>
 import axios from 'axios';
-import {mapMutations, mapState} from 'vuex';
+import {mapMutations} from 'vuex';
+import {required} from '@vuelidate/validators'
+import useVuelidate from "@vuelidate/core";
 
 export default {
   name: 'Search',
   data() {
     return {
-      categories: [
-        {id: 1, name: 'категория 1'},
-        {id: 2, name: 'категория 2'},
-        {id: 3, name: 'категория 3'}
-      ],
-      companies: [
-        {id: 1, name: 'компания 1'},
-        {id: 2, name: 'компания 2'},
-        {id: 3, name: 'компания 3'}
-      ],
+      v$: useVuelidate(),
+      categories: [],
+      companies: [],
       isSearch: false,
       category: [],
       company: [],
       date_from: '',
       date_to: '',
+      isValidate: false
+    }
+  },
+  validations() {
+    return {
+      category: {
+        required
+      },
+      company: {
+        required
+      }
     }
   },
   async created() {
@@ -79,28 +103,30 @@ export default {
     }),
 
     async submitHandlerSearch(e) {
-      console.log(JSON.stringify(this.category))
-      console.log(JSON.stringify(this.company))
-      console.log(this.date_from)
-      console.log(this.date_to)
-      await axios.post('http://127.0.0.1:5000/api/search/', {
-        headers: {'Content-type': 'application/json'},
-        keywords: JSON.stringify(this.category),
-        enterprise: JSON.stringify(this.company),
-        date_from: this.date_from === '' ? null : this.date_from,
-        date_to: this.date_to === '' ? null : this.date_to
-      })
-          .then(response => {
-            this.isSearch = true;
-            this.setPublications(response.data);
-            this.setSearch(this.isSearch);
+      this.v$.$touch()
+      if (this.v$.$invalid) {
+        this.isValidate = true;
+        alert('Не все поля выбраны')
+      } else {
+        await axios.post('http://127.0.0.1:5000/api/search/', {
+          headers: {'Content-type': 'application/json'},
+          keywords: JSON.stringify(this.category),
+          enterprise: JSON.stringify(this.company),
+          date_from: this.date_from === '' ? null : this.date_from,
+          date_to: this.date_to === '' ? null : this.date_to
+        })
+            .then(response => {
+              this.isSearch = true;
+              this.setPublications(response.data);
+              this.setSearch(this.isSearch);
 
-            this.$router.push({ name: 'list' });
-          }).catch(error => {
-            console.error('Ошибка при отправке:', error)
-          })
+              this.$router.push({name: 'list'});
+            }).catch(error => {
+              console.error('Ошибка при отправке:', error)
+            })
+      }
 
-    },
+    }
   }
 }
 </script>

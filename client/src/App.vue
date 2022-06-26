@@ -8,15 +8,21 @@
 <script>
 import Navbar from "./components/Navbar";
 import 'bootstrap/dist/css/bootstrap.css';
-import {mapMutations, mapActions, mapState} from 'vuex';
+import {mapMutations} from 'vuex';
 
 export default {
   components: {
     Navbar
   },
-  data() {
-    return {
-
+  methods: {
+    ...mapMutations({
+      setAuth: 'auth/setAuth',
+    })
+  },
+  beforeMount() {
+    console.log(this)
+    if(localStorage.getItem('token')) {
+      this.setAuth(true)
     }
   }
 }

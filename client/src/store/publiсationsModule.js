@@ -3,6 +3,8 @@ export const publiсationsModule = {
     state: () => ({
         isSearch: false,
         cards: [],
+        allCards: [],
+        isAll: false
     }),
     getters: {
         getSearch: state => {
@@ -16,11 +18,19 @@ export const publiсationsModule = {
                 state.cards = []
             }
         },
+        setAllCards(state, isAll) {
+            state.isAll = isAll;
+            if(!isAll) {
+                state.allCards = []
+            }
+        },
         setPublications(state, cards) {
             if (!cards)
                 state.cards = []
-            state.cards = cards;
-            console.log(state)
+            if (state.isAll)
+                state.allCards = cards;
+            else
+                state.cards = cards;
         },
     },
     namespaced:true,
