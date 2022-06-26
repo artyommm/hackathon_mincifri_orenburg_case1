@@ -16,36 +16,33 @@ class Publication(db.Model):
                                    db.Column('publication_id', db.Integer, db.ForeignKey('publication.id')),
                                    db.Column('keyword_id', db.Integer, db.ForeignKey('keyword.id'))
                                    )
-    # публикация_запрос
-    publication_request = db.Table('publication_request',
-                                   db.Column('publication_id', db.Integer, db.ForeignKey('publication.id')),
-                                   db.Column('request_id', db.Integer, db.ForeignKey('request.id'))
-                                   )
     # -------------------------------------------------------------------------------------------------------------
 
     # отношения с другими таблицами
     keyWord_id = db.relationship('KeyWord', secondary=publication_keyword,
                                  backref=db.backref('publication', lazy='select'))
 
-    request_id = db.relationship('Request', secondary=publication_request,
-                                 backref=db.backref('publication', lazy='select'))
-
     enterprise_id = db.Column(db.Integer(), db.ForeignKey('enterprise.id'))
 
     informationResource_id = db.Column(db.Integer(), db.ForeignKey('informationresource.id'))
 
-    def __init__(self, public_id, title, date_of_publication, publication_url):
-        self.public_id = public_id
+    def __init__(self, title, date_of_publication, publication_url, enterprise_id, informationResource_id):
         self.title = title
         self.date_of_publication = date_of_publication
         self.publication_url = publication_url
+        self.enterprise_id = enterprise_id
+        self.informationResource_id = informationResource_id
+
+
+    def __eq__(self, other):
+        return self.title == other.title
 
 
 # класс для работы с полями в таблице User
 class PublicationSchema(ma.Schema):
     class Meta:
         fields = (
-            'id', 'title', 'date_of_publication', 'publication_url')
+            'title', 'date_of_publication', 'publication_url', 'enterprise_id', 'informationResource_id')
 
 
 # объекты для отправки и приёмов запросов
